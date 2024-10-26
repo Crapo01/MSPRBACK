@@ -1,0 +1,72 @@
+html{
+    font-family: "Dosis", sans-serif;
+    
+}
+.lobsterFont{
+    font-family: "Lobster", sans-serif;
+    font-weight: bold;    
+}
+p{
+    font-family: "Lobster", sans-serif;      
+}
+.colorGreen{
+    color: rgb(49, 119, 27);
+}
+.colorRed{
+    color: rgb(253, 0, 0);
+}
+.colorBlue{
+    color: rgb(0, 110, 255);
+}
+.colorOrange{
+    color: rgb(255, 153, 0);
+}
+.colorPurple{
+    color: rgb(140, 0, 153);
+}
+
+.linkNone {
+    text-decoration: none;
+}
+.leaflet-routing-alternatives-container{
+    display: none;
+}
+
+.imgFluid{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: auto;
+}
+#root{   
+    background: url(/images/bgwindred.png) no-repeat center ; 
+    background-color: rgb(36, 0, 0);
+    background-size: cover;
+}
+
+.metalBg{
+    background: url(/images/bgwind.png) no-repeat center ;
+    background-color: rgb(31, 30, 37);
+    background-size: cover;
+}
+
+.lightningBg{
+    background: url(/images/light.png) no-repeat center;
+    background-color: rgb(0, 0, 0);
+    background-size: cover;
+}
+
+.relative{
+    position: relative;
+}
+
+.botomRight{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.sticky{
+    position: sticky;
+    top: 0px;
+}

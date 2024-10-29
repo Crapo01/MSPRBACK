@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "accounts")
+@Table(name = "concerts")
 public class Concert {
 	
 	@Id
@@ -28,5 +28,5 @@ public class Concert {
     private String date;
     private String heure;
     private String scene;
-
+    private String lien;
 }

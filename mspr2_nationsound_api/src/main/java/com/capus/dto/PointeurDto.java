@@ -1,5 +1,6 @@
 package com.capus.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,15 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConcertDto {
-	private Long id;
-	
-	private String nom;
-    private String image;
+public class PointeurDto {
+    private Long id;
+    private String nom;
+    private float lon;
+    private float lat;
+    private String type;
     private String description;
-    private String origine;
-    private String date;
-    private String heure;
-    private String scene;
     private String lien;
 }

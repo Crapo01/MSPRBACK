@@ -8,7 +8,7 @@ function Shop() {
             </div>
             <div className="d-flex flex-xl-row flex-column justify-content-around align-items-center metalBg p-3">
             <img src="/images/entree1jour.png" alt="entree 1 jour" className="img-fluid mx-auto " />
-            <a target="_blank" href="https://nationsoundluc.rf.gd/wpdb/boutique/" ><button className='p-3 font-weight-bolder text-danger text-decoration-none h3 text-center lobsterFont'>Acceder à la boutique</button></a> 
+            <a target="_blank" href="https://nationsoundluc.rf.gd/wpdb/boutique/" ><button className='p-3 m-3 font-weight-bolder text-danger text-decoration-none h3 text-center lobsterFont'>Acceder à la boutique</button></a> 
             <img src="/images/entree3jours.png" alt="entree 1 jour" className="img-fluid mx-auto " />
             </div>
         </div>               

@@ -23,15 +23,15 @@ public class ConcertController {
 	}
 	
 	//ADD REST API POST add account
-	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@CrossOrigin()
 	@PostMapping
-	public ResponseEntity<ConcertDto> addAccount(@RequestBody ConcertDto concertDto){
+	public ResponseEntity<ConcertDto> addConcert(@RequestBody ConcertDto concertDto){
 		System.out.println(concertDto);
 		return new ResponseEntity<>(concertService.createConcert(concertDto), HttpStatus.CREATED);
 	}
 	
 	//ADD REST API GET account get By Id
-	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@CrossOrigin()
 	@GetMapping("/{id}")
 	public ResponseEntity<ConcertDto> getConcertById(@PathVariable Long id){
 		System.out.println("Get Concert by ID request");
@@ -40,12 +40,10 @@ public class ConcertController {
 	}
 	
 	// ADD REST API POST update
-	@CrossOrigin(origins = "http://127.0.0.1:5500")
-	@PutMapping("/{id}/update")
+	@CrossOrigin()
+	@PutMapping("/update/{id}")
 	public ResponseEntity<ConcertDto> update(@PathVariable Long id,@RequestBody ConcertDto request){
-		System.out.println("Update: "+request);
-
-		ConcertDto updatedConcertDto = concertService.update(id,request.getNom(),request.getImage(), request.getDescription(), request.getOrigine(), request.getDate(), request.getHeure(), request.getScene());
+		ConcertDto updatedConcertDto = concertService.update(id,request.getNom(),request.getImage(), request.getDescription(), request.getOrigine(), request.getDate(), request.getHeure(), request.getScene(), request.getLien());
 		return ResponseEntity.ok(updatedConcertDto);
 		
 	}
@@ -61,7 +59,7 @@ public class ConcertController {
 	}
 
 	//DELETE ACCOUNT BY ID REST API
-	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@CrossOrigin()
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteConcert(@PathVariable Long id){
 		System.out.println("Delete by ID request");

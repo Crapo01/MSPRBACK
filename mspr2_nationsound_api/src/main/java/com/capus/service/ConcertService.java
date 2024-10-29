@@ -9,7 +9,7 @@ public interface ConcertService {
 
 	ConcertDto getConcertById(Long id);
 
-	ConcertDto update(Long id, String Nom, String Image,String Description,String Origine,String Date,String Heure,String Scene);
+	ConcertDto update(Long id, String Nom, String Image,String Description,String Origine,String Date,String Heure,String Scene,String lien);
 
 	List<ConcertDto> getAllConcerts();
 

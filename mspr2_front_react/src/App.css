@@ -6,9 +6,16 @@ html{
     font-family: "Lobster", sans-serif;
     font-weight: bold;    
 }
-p{
+
+.dosisFont{
+    font-family: "Dosis", sans-serif;
+    font-weight: bold; 
+}
+
+p {
     font-family: "Lobster", sans-serif;      
 }
+
 .colorGreen{
     color: rgb(49, 119, 27);
 }
@@ -69,4 +76,8 @@ p{
 .sticky{
     position: sticky;
     top: 0px;
+}
+.sticky50{
+    position: sticky;
+    top: 50px;
 }

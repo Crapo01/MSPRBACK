@@ -8,24 +8,22 @@ function Actu() {
     const [datasNormal, setDatasNormal] = useState(false);
     const [datasPrio, setDatasPrio] = useState(false);
     
-    async function fetchWordPressData() {
+    async function fetchData() {
         try {
-            const response = await fetch("https://nationsoundluc.rf.gd/wpdb/wp-json/acf/v3/actu");
-            // const response = await fetch("http://localhost/ns_hl_wp/wp-json/acf/v3/actu");
-            const data = await response.json();
-            //console.log(data)
+            
+            const response = await fetch("http://localhost:8080/api/informations/all");            
+            const data = await response.json();            
             if (data.code === "rest_no_route") {throw "error:rest_no_route"} else {sortDatas(data)} ;
 
         } catch (error) {
-            //console.log("Une erreur est survenue dans l'appel API actu: ")
-            //console.log(error)       
+            throw("Une erreur est survenue dans l'appel API actu: ")                  
         }
     }
     useEffect(() => {
         //console.log(localDatas);
         if (localDatas) {//console.log("uselocalstorage");
             sortDatas(localDatas)}
-        fetchWordPressData();
+        fetchData();
     }, []);
 
     function sortDatas(data) {
@@ -34,7 +32,7 @@ function Actu() {
         const prioTemp=new Array;
         data.map((item) => (
             
-            item.acf.importance==="prioritaire"? prioTemp.unshift(item):normalTemp.push(item)
+            item.important===true? prioTemp.unshift(item):normalTemp.push(item)
         ))
         setDatasNormal(normalTemp);
         setDatasPrio(prioTemp);
@@ -49,7 +47,7 @@ function Actu() {
                 
                     {datasNormal.map((item) => (                        
                         <Col key={item.id} className={"p-3 col-12 col-lg-6"} >
-                            <div className={"p-3 border rounded shadow border-primary"}> { ReactHtmlParser (item.acf.texteactu)}  </div>                                                         
+                            <div className={"p-3 border rounded shadow border-primary border-5 metalBg text-light"}> {item.message} </div>                                                         
                         </Col>
                     ))}
                 </Row>
@@ -68,7 +66,7 @@ function Actu() {
                 
                     {datasPrio.map((item) => (                        
                         <Col key={item.id} className={"p-3 col-12 col-lg-6"} >
-                            <div className={"p-3 border rounded shadow border-danger"}> { ReactHtmlParser (item.acf.texteactu)}  </div>                                                         
+                            <div className={"p-3 border rounded shadow border-danger border-5 metalBg text-light"}> { item.message}  </div>                                                         
                         </Col>
                     ))}
                 </Row>                

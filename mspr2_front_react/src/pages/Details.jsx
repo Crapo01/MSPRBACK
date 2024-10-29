@@ -33,6 +33,9 @@ function Details() {
             <Col className="col-12 col-md-6 col-lg-4">
                 <h3>Scène:</h3> <p>{concert.groupe.scene}</p>
             </Col>
+            <Col className="col-12 col-md-6 col-lg-4">
+                <a href={concert.groupe.lien}>Voir site du groupe</a>
+            </Col>
         </Row>
     );
     else

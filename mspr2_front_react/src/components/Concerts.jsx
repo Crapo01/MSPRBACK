@@ -36,8 +36,8 @@ function Concerts() {
                 <Row>
                     {datas.map((item) => (
 
-                        <Col className="col-12 col-md-6 col-lg-4 p-3 bg-secondary">
-                            <div key={item.id} className={"p-3 border rounded metalBg shadow h-100 relative"}>
+                        <Col key={item.id} className="col-12 col-md-6 col-lg-4 p-3 bg-secondary">
+                            <div  className={"p-3 border rounded metalBg shadow h-100 relative"}>
                                 <h2> {item.nom}</h2>
                                 <img src={item.image} alt="" style={{ width: 100 + '%' }} />
                                 <p className="text-light h4">le {item.date} à {item.heure}</p>
@@ -48,9 +48,10 @@ function Concerts() {
                                             nom: item.nom,
                                             image: item.image,
                                             description: item.description,
-                                            origine: item.continent,
+                                            origine: item.origine,
                                             programmation: {date: item.date,heure: item.heure},
-                                            scene: item.scene
+                                            scene: item.scene,
+                                            lien: item.lien
                                             }))}>
                                         details
                                     </Button>

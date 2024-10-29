@@ -6,7 +6,7 @@ import com.capus.entity.Concert;
 
 public interface ConcertRepository extends JpaRepository<Concert, Long> {
 
-	Concert save(Iterable<Object> o);
+	//Concert save(Iterable<Object> o);
 	
 
 }

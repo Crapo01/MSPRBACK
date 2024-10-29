@@ -14,6 +14,7 @@ import Concert from "./pages/Concert"
 import Admin from "./pages/Admin"
 
 
+
 function App() {
   const [groupe,setGroupe]= useState();
   
@@ -32,7 +33,8 @@ function App() {
         <Route path="/Programme" element={<Programme />} />
         <Route path="/Details" element={<Details />} />        
         <Route path="/Mentions" element={<Mentions />} />
-        <Route path="/admin" element={<Admin/>} />       
+        <Route path="/Admin" element={<Admin/>} />
+              
       </Routes>
       <Footer></Footer>
       </Container> 

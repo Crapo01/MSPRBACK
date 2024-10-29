@@ -12,7 +12,8 @@ function CarteMini() {
   const [datas, setDatas] = useState([]);
   async function fetchWordPressData() {
     try {
-        const response = await fetch("https://nationsoundluc.rf.gd/wpdb/wp-json/acf/v3/pointeur");
+      const response = await fetch("http://localhost:8080/api/pointeurs/all");
+        // const response = await fetch("https://nationsoundluc.rf.gd/wpdb/wp-json/acf/v3/pointeur");
         // const response = await fetch("http://localhost/ns_hl_wp/wp-json/acf/v3/pointeur");
         const data = await response.json();
         //console.log(data)
@@ -56,8 +57,8 @@ useEffect(() => {
     
     <li key={item.id}>
 
-      {<Marker position={[item.acf.lat, item.acf.lon]} >
-        <Tooltip>{item.acf.nom} </Tooltip>        
+      {<Marker position={[item.lat, item.lon]} >
+        <Tooltip>{item.nom} </Tooltip>        
       </Marker>}
     </li>
   ))}

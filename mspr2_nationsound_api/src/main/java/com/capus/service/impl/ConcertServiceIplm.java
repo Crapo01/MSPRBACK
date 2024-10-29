@@ -12,20 +12,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ConcertServiceIpml implements ConcertService{
+public class ConcertServiceIplm implements ConcertService{
 	
 	private ConcertRepository concertRepository;
 
 	
-	public ConcertServiceIpml(ConcertRepository concertRepository) {
+	public ConcertServiceIplm(ConcertRepository concertRepository) {
 		this.concertRepository = concertRepository;
 	}
 
 	@Override
 	public ConcertDto createConcert(ConcertDto concertDto) {
 		Concert concert = ConcertMapper.mapToConcert(concertDto);
-		Concert savedAccount = concertRepository.save(concert);
-		return ConcertMapper.mapToConcertDto(savedAccount);
+		Concert savedConcert = concertRepository.save(concert);
+		return ConcertMapper.mapToConcertDto(savedConcert);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ConcertServiceIpml implements ConcertService{
 	}
 
 	@Override
-	public ConcertDto update(Long id, String Nom, String Image,String Description,String Origine,String Date,String Heure,String Scene){
+	public ConcertDto update(Long id, String Nom, String Image,String Description,String Origine,String Date,String Heure,String Scene,String lien){
 		Concert concert = concertRepository
 				.findById(id)
 				.orElseThrow(()->new RuntimeException(id+" No concert found"));
@@ -49,24 +49,25 @@ public class ConcertServiceIpml implements ConcertService{
 		concert.setDate(Date);
 		concert.setHeure(Heure);
 		concert.setScene(Scene);
+		concert.setLien(lien);
 
-		Concert savedAccount = concertRepository.save(concert);
-		return ConcertMapper.mapToConcertDto(savedAccount);
+		Concert savedConcert = concertRepository.save(concert);
+		return ConcertMapper.mapToConcertDto(savedConcert);
 	}
 
 
 
 	@Override
 	public List<ConcertDto> getAllConcerts() {
-		List<Concert> accounts = concertRepository.findAll();
-		return accounts.stream().map(ConcertMapper::mapToConcertDto).collect(Collectors.toList());
+		List<Concert> concerts = concertRepository.findAll();
+		return concerts.stream().map(ConcertMapper::mapToConcertDto).collect(Collectors.toList());
 	}
 
 	@Override
 	public void deleteConcert(Long id) {
 		Concert concert = concertRepository
 				.findById(id)
-				.orElseThrow(()->new RuntimeException(" No account found"));
+				.orElseThrow(()->new RuntimeException(" No concert found"));
 		concertRepository.deleteById(id);
 	}
 

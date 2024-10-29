@@ -4,13 +4,13 @@ import com.capus.dto.ConcertDto;
 import com.capus.entity.Concert;
 
 public class ConcertMapper {
-	public static Concert mapToConcert(ConcertDto accountDto){
-		Concert account = new Concert(accountDto.getId(), accountDto.getNom(), accountDto.getImage(), accountDto.getDescription(), accountDto.getOrigine(), accountDto.getDate(), accountDto.getHeure(), accountDto.getScene());
-		return account;		
+	public static Concert mapToConcert(ConcertDto concertDto){
+		Concert concert = new Concert(concertDto.getId(), concertDto.getNom(), concertDto.getImage(), concertDto.getDescription(), concertDto.getOrigine(), concertDto.getDate(), concertDto.getHeure(), concertDto.getScene(), concertDto.getLien());
+		return concert;
 	}
 	
-	public static ConcertDto mapToConcertDto(Concert account){
-		ConcertDto accountDto = new ConcertDto(account.getId(), account.getNom(), account.getImage(), account.getDescription(), account.getOrigine(), account.getDate(), account.getHeure(), account.getScene());
-		return accountDto;		
+	public static ConcertDto mapToConcertDto(Concert concert){
+		ConcertDto concertDto = new ConcertDto(concert.getId(), concert.getNom(), concert.getImage(), concert.getDescription(), concert.getOrigine(), concert.getDate(), concert.getHeure(), concert.getScene(), concert.getLien());
+		return concertDto;
 	}
 }

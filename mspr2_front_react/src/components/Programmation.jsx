@@ -12,10 +12,10 @@ function Programmation() {
 
     const filteredEvents = datas.filter
         ((event) =>
-            (event.date === filterDay || filterDay === "tout") &&
-            (event.origine === filterOrigin || filterOrigin === "tout") &&
+            (event.date.toLowerCase() === filterDay || filterDay === "tout") &&
+            (event.origine.toLowerCase() === filterOrigin || filterOrigin === "tout") &&
             (event.heure.slice(0, 2) >= filterHour || filterHour === "tout") &&
-            (event.scene === filterScene || filterScene === "tout")
+            (event.scene.toLowerCase() === filterScene || filterScene === "tout")
         )
 
     async function fetchWordPressData() {
@@ -68,11 +68,11 @@ function Programmation() {
                                 <div className="text-style4">Continent</div>
                                 <select onChange={(e) => setFilterOrigin(e.target.value)} value={filterOrigin} style={{ width: 150 + 'px' }}>
                                     <option value={"tout"}>tout</option>
-                                    <option value={"Europe"}>Europe</option>
-                                    <option value={"Asie"}>Asie</option>
-                                    <option value={"Amerique"}>Ameriques</option>
-                                    <option value={"Australie"}>Australie</option>
-                                    <option value={"Afrique"}>Afrique</option>
+                                    <option value={"europe"}>Europe</option>
+                                    <option value={"asie"}>Asie</option>
+                                    <option value={"amerique"}>Ameriques</option>
+                                    <option value={"australie"}>Australie</option>
+                                    <option value={"afrique"}>Afrique</option>
                                 </select>
                             </Col>
                             <Col>

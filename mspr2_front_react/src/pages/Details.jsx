@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ConcertContext } from "../components/context";
-import { Col, Row } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 
 
 
@@ -8,10 +10,12 @@ import { Col, Row } from "react-bootstrap";
 
 function Details() {
     const concert = useContext(ConcertContext);
-    //console.log(`concert:${JSON.stringify(concert)} with ${Object.keys(concert).length} keys`)
+    
+    
     if (concert.groupe!==undefined)  
     return (
         <Row className={"p-3 border rounded shadow bg-light mb-5 mx-1"}>
+            
             <Col className="col-12 p-3 border rounded bg-secondary">
 
                 <h2> {concert.groupe.nom}</h2>
@@ -39,8 +43,17 @@ function Details() {
         </Row>
     );
     else
-    return(<div><h1>"pas de données disponibles"</h1>
-    <img src="/images/imageBg.jpg" alt="background concert" /></div> )
-};
+    {
+        return(            
+            <Link to={"/Concert"} className='text-decoration-none min-vh-100 text-center'>
+                <h1>BACK TO CONCERTS</h1>
+                <div className={" m-5 p-5 border rounded shadow bg-secondary mb-5 mx-1 min-vh-100"}>
+                    
+                    <Image src="/images/logo_festival.png" alt="logo nation sound" width={"150px"} rounded />
+                </div>
+            </Link>            
+        )              
+    }    
+}; 
 
 export default Details;

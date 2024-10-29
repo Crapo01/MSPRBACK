@@ -45,7 +45,8 @@ public class PointeurServiceIplm implements PointeurService {
         pointeur.setType(type);
         pointeur.setDescription(description);
         pointeur.setLien(lien);
-        return PointeurMapper.maptoPointeurDto(pointeur);
+        Pointeur savedPointeur = pointeurRepositary.save(pointeur);
+        return PointeurMapper.maptoPointeurDto(savedPointeur);
     }
 
     @Override

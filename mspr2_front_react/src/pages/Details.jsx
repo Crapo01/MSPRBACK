@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ConcertContext } from "../components/context";
 import { Col, Image, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
+import Concerts from "../components/Concerts";
 
 
 
@@ -44,14 +43,9 @@ function Details() {
     );
     else
     {
-        return(            
-            <Link to={"/Concert"} className='text-decoration-none min-vh-100 text-center'>
-                <h1>BACK TO CONCERTS</h1>
-                <div className={" m-5 p-5 border rounded shadow bg-secondary mb-5 mx-1 min-vh-100"}>
-                    
-                    <Image src="/images/logo_festival.png" alt="logo nation sound" width={"150px"} rounded />
-                </div>
-            </Link>            
+        return(     
+                   
+            <Concerts/>       
         )              
     }    
 }; 

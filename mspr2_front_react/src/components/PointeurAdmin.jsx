@@ -29,7 +29,7 @@ function PointeurAdmin() {
 
         async function handleDelete(values) {
             await new Promise((r) => setTimeout(r, 500));
-            const dataString = JSON.stringify(values, null, '  ');            
+            const dataString = JSON.stringify(values, null, '  ');
             if (window.confirm('Confirmez vous vouloir effacer?')) {
                 deleteItem(dataString)
             }
@@ -47,6 +47,7 @@ function PointeurAdmin() {
                 alert("Une erreur c\'est produite");
             }
             finally {
+                alert("delete complete");
                 window.location.reload();
             }
         }
@@ -78,7 +79,7 @@ function PointeurAdmin() {
 
         async function handleAdd(values) {
             await new Promise((r) => setTimeout(r, 500));
-            const dataString = JSON.stringify(values, null, '  ');            
+            const dataString = JSON.stringify(values, null, '  ');
             if (window.confirm('Confirmez vous la nouvelle entrée?')) {
                 createItem(dataString)
             }
@@ -103,33 +104,35 @@ function PointeurAdmin() {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
                     body: newProduct,
-                })                
+                })
             }
             catch (error) {
                 //console.log(error);
             }
             finally {
+                alert("create complete");
                 window.location.reload();
             }
         }
 
-        async function updateItem(dataString, id) {            
-            const url = 'http://localhost:8080/api/pointeurs/update/' + id            
+        async function updateItem(dataString, id) {
+            const url = 'http://localhost:8080/api/pointeurs/update/' + id
             try {
-                const newProduct = dataString                
+                const newProduct = dataString
                 const response = await fetch(url, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
                     body: newProduct,
-                })                
+                })
                 //console.log('status:', response.status)
             }
             catch (error) {
                 //console.log(error);
             }
-            finally {               
+            finally {
+                alert("update complete");
                 window.location.reload();
             }
         }
@@ -142,7 +145,7 @@ function PointeurAdmin() {
                     </div>
                     <Formik
                         initialValues={{
-                            id:"",
+                            id: "",
                             lon: 2.4433,
                             lat: 48.8383,
                             nom: '',
@@ -155,44 +158,48 @@ function PointeurAdmin() {
                             <Form>
                                 <div className="d-flex flex-column">
                                     <div className="d-flex">
-                                    <div className="d-flex flex-column">
-                                        <label htmlFor="id">Id (MAJ)</label>
-                                        <Field type="number" id="id" name="id" placeholder="id du pointeur"  />
+                                        <div className="d-flex flex-column">
+                                            <label htmlFor="id">Id (MAJ)</label>
+                                            <Field type="number" id="id" name="id" placeholder="id du pointeur" />
+                                        </div>
+                                        <div className="d-flex flex-column">
+                                            <label htmlFor="lat">latitude</label>
+                                            <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" />
+                                        </div>
+
+                                    </div>
+                                    <div className="d-flex">
+                                        <div className="d-flex flex-column">
+                                            <label htmlFor="lon">longitude</label>
+                                            <Field type="number" step="0.0001" id="lon" name="lon" placeholder="longitude" />
+                                        </div>
+                                        <div className="d-flex flex-column">
+                                            <label>Type</label>
+                                            <Field name="type" as="select" className="type">
+
+                                                <option value="scene">scene</option>
+
+                                                <option value="alimentation">alimentation</option>
+
+                                                <option value="informations">informations</option>
+
+                                                <option value="toilettes">toilettes</option>
+                                            </Field>
+                                        </div>
                                     </div>
                                     <div className="d-flex flex-column">
-                                        <label htmlFor="lat">latitude</label>
-                                        <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" />
+                                        <label htmlFor="description">description du pointeur</label>
+                                        <Field id="description" name="description" placeholder="description" className="my-3" />
                                     </div>
                                     <div className="d-flex flex-column">
-                                        <label htmlFor="lon">longitude</label>
-                                        <Field type="number" step="0.0001" id="lon" name="lon" placeholder="longitude" />
-                                    </div>
+                                        <label htmlFor="lien">lien externe</label>
+                                        <Field id="lien" name="lien" placeholder="lien" className="my-3" />
                                     </div>
                                     <div className="d-flex flex-column">
                                         <label htmlFor="nom">nom du pointeur</label>
                                         <Field id="nom" name="nom" placeholder="nom du pointeur" className="my-2" />
                                     </div>
-                                    <div>
-                                        <label>Type</label>
-                                        <Field name="type" as="select" className="type">
 
-                                            <option value="scene">scene</option>
-
-                                            <option value="alimentation">alimentation</option>
-
-                                            <option value="informations">informations</option>
-
-                                            <option value="toilettes">toilettes</option>
-                                        </Field>
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="description">description du pointeur</label>
-                                            <Field id="description" name="description" placeholder="description" className="my-3" />
-                                        </div>
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="lien">lien externe</label>
-                                            <Field id="lien" name="lien" placeholder="lien" className="my-3" />
-                                        </div>
-                                    </div>
                                 </div>
                                 <div className=' d-flex justify-content-end'>
                                     {props.values.id == "" &&

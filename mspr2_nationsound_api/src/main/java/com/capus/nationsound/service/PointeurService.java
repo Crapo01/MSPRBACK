@@ -1,0 +1,12 @@
+package com.capus.nationsound.service;
+
+import com.capus.nationsound.dto.PointeurDto;
+
+import java.util.List;
+
+public interface PointeurService {
+    PointeurDto createPointeur(PointeurDto pointeurDto);
+    List<PointeurDto> getAllPointeurs();
+    PointeurDto update(Long id, String nom,float lat,float lon,String type,String description,String lien);
+    void deletePointeur(Long id);
+}

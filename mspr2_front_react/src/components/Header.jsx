@@ -21,14 +21,15 @@ function Header() {
               <Nav.Link> <Link to={"/Concert"} className='font-weight-bolder text-light text-decoration-none h5'>CONCERTS</Link></Nav.Link>
               <Nav.Link> <Link to={"/Programme"} className='font-weight-bolder text-light text-decoration-none h5'>PROGRAMME</Link></Nav.Link>
 
-              <Nav.Link target="_blank" href="https://nationsoundluc.rf.gd/wpdb/partenaires/"><div className='font-weight-bolder text-light text-decoration-none h5'>PARTENAIRES</div></Nav.Link>
-              <Nav.Link target="_blank" href="https://nationsoundluc.rf.gd/wpdb/faq/"><div className='font-weight-bolder text-light text-decoration-none h5'>FAQ</div></Nav.Link>
+              <Nav.Link  href="https://nationsoundmetal.rf.gd/wp/partenaires/"><div className='font-weight-bolder text-light text-decoration-none h5'>PARTENAIRES</div></Nav.Link>
+              <Nav.Link  href="https://nationsoundmetal.rf.gd/wp/foire-aux-questions/"><div className='font-weight-bolder text-light text-decoration-none h5'>FAQ</div></Nav.Link>
 
-              <Nav.Link target="_blank" href="https://nationsoundluc.rf.gd/wpdb/boutique/"><div className='font-weight-bolder text-light text-decoration-none h5'>BOUTIQUE</div></Nav.Link>
+              <Nav.Link  href="https://nationsoundmetal.rf.gd/wp"><div className='font-weight-bolder text-light text-decoration-none h5'>BOUTIQUE</div></Nav.Link>
+              <Nav.Link> <Link to={"/Login_page"} className='font-weight-bolder text-light text-decoration-none h5'>login</Link></Nav.Link>
             </div>
-            <div>
+            {/* <div>
               <Nav.Link><Link to={"/Admin"} className='font-weight-bolder text-danger text-decoration-none h5'>ADMIN PANEL</Link></Nav.Link>
-            </div>
+            </div> */}
             </div>
           </Nav>
 

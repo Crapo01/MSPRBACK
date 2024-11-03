@@ -12,7 +12,9 @@ import { useState } from "react"
 import Mentions from "./pages/Mentions"
 import Concert from "./pages/Concert"
 import Admin from "./pages/Admin"
-
+import AuthProvider from "./components/AuthProvider";
+import PrivateRoute from "./components/PrivateRoute"
+import Login from "./components/Login"
 
 
 function App() {
@@ -23,21 +25,27 @@ function App() {
       updateGroupe: (newGroupe)=>setGroupe(newGroupe),
       groupe: groupe
       }}>
+        <AuthProvider>
        <Container >
       <Header></Header>
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/Login" element={<Login />} />
+        {/* <Route element={<PrivateRoute />}> */}
+          <Route path="/Admin" element={<Admin/>} />
+        {/* </Route> */}
         <Route path="/Map" element={<Map />} />        
         <Route path="/Concert" element={<Concert />} />
         <Route path="/Programme" element={<Programme />} />
         <Route path="/Details" element={<Details />} />        
         <Route path="/Mentions" element={<Mentions />} />
-        <Route path="/Admin" element={<Admin/>} />
+        
               
       </Routes>
       <Footer></Footer>
       </Container> 
+      </AuthProvider>
     </ConcertContext.Provider>
   )
 }

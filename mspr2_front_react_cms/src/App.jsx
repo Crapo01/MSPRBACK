@@ -34,11 +34,11 @@ class App extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showEditorBoard: user.roles.includes("ROLE_EDITOR")||user.roles.includes("ROLE_ADMIN"),
+        showEditorBoard: user.roles.includes("ROLE_EDITOR") || user.roles.includes("ROLE_ADMIN"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
-    
+
     EventBus.on("logout", () => {
       this.logOut();
     });
@@ -66,37 +66,39 @@ class App extends Component {
           <Link to={"/"} className="navbar-brand">
             NationSound CMS
           </Link>
-          <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
-
-            {showEditorBoard && (
-              <li className="nav-item">
-                <Link to={"/editor"} className="nav-link">
-                  Editor Board
+          
+            <div className="navbar-nav justify-content-around w-50">
+              <li className="nav-item border">
+                <Link to={"/home"} className="nav-link">
+                  Home
                 </Link>
               </li>
-            )}
 
-            {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin Board
-                </Link>
-              </li>
-            )}
+              {currentUser && (
+                <li className="nav-item border">
+                  <Link to={"/viewer"} className="nav-link">
+                    Viewer Board
+                  </Link>
+                </li>
+              )}
 
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/viewer"} className="nav-link">
-                  Viewer Board
-                </Link>
-              </li>
-            )}
-          </div>
+              {showEditorBoard && (
+                <li className="nav-item border">
+                  <Link to={"/editor"} className="nav-link">
+                    Editor Board
+                  </Link>
+                </li>
+              )}
+
+              {showAdminBoard && (
+                <li className="nav-item border">
+                  <Link to={"/admin"} className="nav-link">
+                    Admin Board
+                  </Link>
+                </li>
+              )}
+            </div>
+          
 
           {currentUser ? (
             <div className="navbar-nav ml-auto">

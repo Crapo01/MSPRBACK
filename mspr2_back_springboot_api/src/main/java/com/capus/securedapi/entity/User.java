@@ -1,4 +1,4 @@
-package com.capus.securedapi.models;
+package com.capus.securedapi.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
       @UniqueConstraint(columnNames = "username"),
       @UniqueConstraint(columnNames = "email") 
     })
-public class User {
+public class  User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

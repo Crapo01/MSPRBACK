@@ -3,10 +3,16 @@ package com.capus.securedapi.controllers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.capus.securedapi.dto.UserRoleUpdateDto;
+import com.capus.securedapi.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.stream.Collectors;
 
-import com.capus.securedapi.models.ERole;
+import com.capus.securedapi.entity.ERole;
 import jakarta.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +21,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.web.bind.annotation.*;
 
 
-import com.capus.securedapi.models.Role;
-import com.capus.securedapi.models.User;
+import com.capus.securedapi.entity.Role;
+import com.capus.securedapi.entity.User;
 import com.capus.securedapi.payload.request.LoginRequest;
 import com.capus.securedapi.payload.request.SignupRequest;
 import com.capus.securedapi.payload.response.JwtResponse;
@@ -35,8 +38,11 @@ import com.capus.securedapi.security.services.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth/")
 public class AuthController {
+
+  private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+
   @Autowired
   AuthenticationManager authenticationManager;
 
@@ -52,7 +58,14 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
-  @PostMapping("/signin")
+
+  private UserService userService;
+
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @PostMapping("signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
@@ -73,7 +86,7 @@ public class AuthController {
                          roles));
   }
 
-  @PostMapping("/signup")
+  @PostMapping("signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
@@ -96,9 +109,9 @@ public class AuthController {
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+      Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
+      roles.add(viewerRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
@@ -109,15 +122,15 @@ public class AuthController {
 
           break;
         case "editor":
-          Role modRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+          Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
+          roles.add(editorRole);
 
           break;
         default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+          Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
+          roles.add(viewerRole);
         }
       });
     }
@@ -127,4 +140,61 @@ public class AuthController {
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    logger.info("delete end point reached");
+    logger.info(id.toString());
+    if (!userRepository.existsById(id)) {
+      return ResponseEntity
+              .badRequest()
+              .body(new MessageResponse("Error: No User found!"));
+    }
+    userService.deleteUser(id);
+    return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody UserRoleUpdateDto userRoleUpdateDto) {
+    logger.info("update end point reached");
+    logger.info(id.toString());
+    if (!userRepository.existsById(id)) {
+      return ResponseEntity
+              .badRequest()
+              .body(new MessageResponse("Error: No User found!"));
+    }
+
+    Set<String> strRoles = userRoleUpdateDto.getRole();
+    Set<Role> roles = new HashSet<>();
+
+    if (strRoles == null || strRoles.isEmpty() ) {
+      Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+      roles.add(viewerRole);
+    } else {
+      strRoles.forEach(role -> {
+        switch (role) {
+          case "admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
+
+            break;
+          case "editor":
+            Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(editorRole);
+
+            break;
+          default:
+            Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(viewerRole);
+        }
+      });
+    }
+    userService.updateUser(id,roles);
+    return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+  }
+
 }

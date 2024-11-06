@@ -1,30 +1,38 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
-import AuthService from "../services/auth.service";
+import userService from "../services/user.service";
+import eventBus from "../common/EventBus";
+import authService from "../services/auth.service";
+
 
 function ActuAdmin() {
 
     const [datas, setDatas] = useState(false);
-    // const [showAdmin, setShowAdmin] = useState(false);
-    // const [showEditor, setShowEditor] = useState(false);
+    const [showPanel, setShowPanel] = useState(false);
+
 
     async function fetchData() {
-        try {
+        userService.getInfo().then(
+            response => {
+                console.log(response)
+                const data = response.data;
+                if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+            },
+            error => {
+                console.log(error.message);
 
-            const response = await fetch("http://localhost:8080/api/informations/all");
-            const data = await response.json();
-            if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
-
-        } catch (error) {
-            throw ("Une erreur est survenue dans l'appel API actu: ")
-        }
+                if (error.response && error.response.status === 401) {
+                    eventBus.dispatch("logout");
+                }
+            }
+        );
     }
 
     useEffect(() => {
         fetchData();
-        // setShowAdmin(AuthService.getCurrentUser().roles.includes("ROLE_ADMIN"));
-        // setShowEditor(AuthService.getCurrentUser().roles.includes("ROLE_EDITOR"));
+        const user = authService.getCurrentUser();
+        if (user) setShowPanel(user.roles.includes("ROLE_EDITOR") || user.roles.includes("ROLE_ADMIN"));
     }, []);
 
 
@@ -39,19 +47,34 @@ function ActuAdmin() {
         }
 
         async function deleteItem(id) {
-            const url = 'http://localhost:8080/api/informations\/' + id
-            try {
-                const response = await fetch(url, {
-                    method: 'DELETE'
-                })
-            }
+            userService.deleteInfo(id).then(
+                response => {
+                    console.log(response)
+                    const data = response.data;
+                    if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    window.location.reload()
+                },
+                error => {
+                    console.log(error.message);
 
-            catch (error) {
-                alert("Une erreur c\'est produite");
-            }
-            finally {
-                window.location.reload();
-            }
+                    if (error.response && error.response.status === 401) {
+                        eventBus.dispatch("logout");
+                    }
+                }
+            );
+            // const url = 'http://localhost:8080/api/informations\/' + id
+            // try {
+            //     const response = await fetch(url, {
+            //         method: 'DELETE'
+            //     })
+            // }
+
+            // catch (error) {
+            //     alert("Une erreur c\'est produite");
+            // }
+            // finally {
+            //     window.location.reload();
+            // }
         }
 
         if (datas) {
@@ -65,7 +88,7 @@ function ActuAdmin() {
                                 <div> {"id:" + item.id + " |        important: " + item.important}  </div>
                                 <div> {"message: " + item.message}  </div>
 
-                                <Button className='btn-danger border ' onClick={() => handleDelete(item.id)} >Effacer</Button>
+                                <Button className='btn-danger border btn-sm' onClick={() => handleDelete(item.id)} >Effacer</Button>
                             </Col>
                         ))}
                     </Row>
@@ -96,52 +119,85 @@ function ActuAdmin() {
 
 
         async function createItem(dataString) {
-            //console.log('start')
-            const url = 'http://localhost:8080/api/informations'
-            try {
-                const newProduct = dataString
-                //console.log('String sent thru post: ' + newProduct)
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: newProduct,
-                })
-                //console.log(response)
-                //console.log('status:', response.status)
-            }
-            catch (error) {
-                //console.log(error);
-            }
-            finally {
-                window.location.reload();
-            }
+
+            userService.createInfo(dataString).then(
+                response => {
+                    console.log(response)
+                    const data = response.data;
+                    if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    window.location.reload()
+                },
+                error => {
+                    console.log(error.message);
+
+                    if (error.response && error.response.status === 401) {
+                        eventBus.dispatch("logout");
+                    }
+                }
+            );
+
+            // const URL = 'http://localhost:8080/api/informations'
+            // const HEADER = authHeader();
+            // console.log(HEADER)
+            // try {
+            //     const newProduct = dataString
+            //     //console.log('String sent thru post: ' + newProduct)
+            //     const response = await fetch(URL, {
+            //         method: 'POST',
+            //         headers:HEADER,
+            //         body: newProduct,
+            //     })
+            //     //console.log(response)
+            //     //console.log('status:', response.status)
+            // }
+            // catch (error) {
+            //     //console.log(error);
+            // }
+            // finally {
+            //     alert("done")
+            //     window.location.reload();
+            // }
         }
 
         async function updateItem(dataString, id) {
-            //console.log('start')
-            const url = 'http://localhost:8080/api/informations/update/' + id
-            //console.log(url)
-            try {
-                const newProduct = dataString
-                //console.log('String sent thru post: ' + newProduct)
-                const response = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: newProduct,
-                })
-                //console.log(response)
-                //console.log('status:', response.status)
-            }
-            catch (error) {
-                //console.log(error);
-            }
-            finally {
-                window.location.reload();
-            }
+
+            userService.updateInfo(dataString, id).then(
+                response => {
+                    console.log(response)
+                    const data = response.data;
+                    if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    window.location.reload()
+                },
+                error => {
+                    console.log(error.message);
+
+                    if (error.response && error.response.status === 401) {
+                        eventBus.dispatch("logout");
+                    }
+                }
+            );
+
+            // const url = 'http://localhost:8080/api/informations/update/' + id
+
+            // try {
+            //     const newProduct = dataString
+            //     //console.log('String sent thru post: ' + newProduct)
+            //     const response = await fetch(url, {
+            //         method: 'PUT',
+            //         headers: {
+            //             'Content-Type': 'application/json; charset=utf-8'
+            //         },
+            //         body: newProduct,
+            //     })
+            //     //console.log(response)
+            //     //console.log('status:', response.status)
+            // }
+            // catch (error) {
+            //     //console.log(error);
+            // }
+            // finally {
+            //     window.location.reload();
+            // }
         }
 
         return (
@@ -178,10 +234,10 @@ function ActuAdmin() {
                                     </div>
                                     <div className=' d-flex justify-content-end'>
                                         {props.values.id == "" &&
-                                            <Button className='btn-warning border ' onClick={() => handleAdd(props.values)}>Nouvelle entree</Button>
+                                            <Button className='btn-warning border btn-sm' onClick={() => handleAdd(props.values)}>Nouvelle entree</Button>
                                         }
                                         {props.values.id != "" &&
-                                            <Button className='btn-warning border ' onClick={() => handleUpdate(props.values)}>Mise a jour</Button>
+                                            <Button className='btn-warning border btn-sm' onClick={() => handleUpdate(props.values)}>Mise a jour</Button>
                                         }
                                     </div>
                                 </Form>
@@ -200,16 +256,18 @@ function ActuAdmin() {
         <>
             <h1 className="lightningBg border rounded text-light text-center sticky z-1">INFORMATIONS</h1>
             <div className="d-flex">
-                {/* {console.log("showEditor" + showEditor)}
-                {showEditor && */}
-                    <div className="w-50">
-                        <Forms />
-                    </div>
-                {/* } */}
-                <div className="w-50">
-                    <Event />
-                </div>
+                {console.log("showPanel" + showPanel)}
+                {showPanel &&
+                    <>
+                        <div className="w-50">
+                            <Forms />
+                        </div>
 
+                        <div className="w-50">
+                            <Event />
+                        </div>
+                    </>
+                }
             </div>
         </>
     );

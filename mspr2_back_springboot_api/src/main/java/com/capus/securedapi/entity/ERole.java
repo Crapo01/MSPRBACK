@@ -1,4 +1,4 @@
-package com.capus.securedapi.models;
+package com.capus.securedapi.entity;
 
 public enum ERole {
   ROLE_VIEWER,

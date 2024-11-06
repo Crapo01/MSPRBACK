@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Col,Image,Row } from "react-bootstrap";
-import ReactHtmlParser from 'react-html-parser'; 
 import useLocalStorage from "../hooks/useLocalStorage";
 
 function Actu() {

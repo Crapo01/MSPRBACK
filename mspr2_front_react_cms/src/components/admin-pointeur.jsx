@@ -1,25 +1,36 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
+import userService from "../services/user.service";
+import eventBus from "../common/EventBus";
+import authService from "../services/auth.service";
 
 function PointeurAdmin() {
 
     const [datas, setDatas] = useState(false);
+    const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {
-        try {
+        userService.getPointeur().then(
+            response => {
+                console.log(response)
+                const data = response.data;
+                if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+            },
+            error => {
+                console.log(error.message);
 
-            const response = await fetch("http://localhost:8080/api/pointeurs/all");
-            const data = await response.json();
-            if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
-
-        } catch (error) {
-            throw ("Une erreur est survenue dans l'appel API actu: ")
-        }
+                if (error.response && error.response.status === 401) {
+                    eventBus.dispatch("logout");
+                }
+            }
+        );
     }
 
     useEffect(() => {
         fetchData();
+        const user = authService.getCurrentUser();
+        if (user) setShowPanel(user.roles.includes("ROLE_EDITOR") || user.roles.includes("ROLE_ADMIN"));
     }, []);
 
 
@@ -34,19 +45,21 @@ function PointeurAdmin() {
         }
 
         async function deleteItem(id) {
-            const url = 'http://localhost:8080/api/pointeurs\/' + id
-            try {
-                const response = await fetch(url, {
-                    method: 'DELETE'
-                })
-            }
-
-            catch (error) {
-                alert("Une erreur c\'est produite");
-            }
-            finally {
-                window.location.reload();
-            }
+            userService.deletePointeur(id).then(
+                response => {
+                    console.log(response)
+                    const data = response.data;
+                    if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    window.location.reload()
+                },
+                error => {
+                    console.log(error.message);
+    
+                    if (error.response && error.response.status === 401) {
+                        eventBus.dispatch("logout");
+                    }
+                }
+            );
         }
 
         if (datas) {
@@ -61,7 +74,7 @@ function PointeurAdmin() {
                                 <div> {"nom: " + item.nom + " | type: " + item.type}  </div>
                                 <div> {"description: " + item.description}  </div>
                                 <div> {"lien: " + item.lien}  </div>
-                                <Button className='btn-danger border ' onClick={() => handleDelete(item.id)} >Effacer</Button>
+                                <Button className='btn-danger border btn-sm' onClick={() => handleDelete(item.id)} >Effacer</Button>
                             </Col>
                         ))}
                     </Row>
@@ -92,44 +105,39 @@ function PointeurAdmin() {
 
 
         async function createItem(dataString) {
-            const url = 'http://localhost:8080/api/pointeurs'
-            try {
-                const newProduct = dataString
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: newProduct,
-                })
-            }
-            catch (error) {
-                //console.log(error);
-            }
-            finally {
-                window.location.reload();
-            }
+            userService.createPointeur(dataString).then(
+                response => {
+                    console.log(response)
+                    const data = response.data;
+                    if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    window.location.reload()
+                },
+                error => {
+                    console.log(error.message);
+    
+                    if (error.response && error.response.status === 401) {
+                        eventBus.dispatch("logout");
+                    }
+                }
+            );
         }
 
         async function updateItem(dataString, id) {
-            const url = 'http://localhost:8080/api/pointeurs/update/' + id
-            try {
-                const newProduct = dataString
-                const response = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: newProduct,
-                })
-                //console.log('status:', response.status)
-            }
-            catch (error) {
-                //console.log(error);
-            }
-            finally {
-                window.location.reload();
-            }
+            userService.updatePointeur(dataString,id).then(
+                response => {
+                    console.log(response)
+                    const data = response.data;
+                    if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    window.location.reload()
+                },
+                error => {
+                    console.log(error.message);
+    
+                    if (error.response && error.response.status === 401) {
+                        eventBus.dispatch("logout");
+                    }
+                }
+            );
         }
 
         return (
@@ -198,10 +206,10 @@ function PointeurAdmin() {
                                 </div>
                                 <div className=' d-flex justify-content-end'>
                                     {props.values.id == "" &&
-                                        <Button className='btn-warning border ' onClick={() => handleAdd(props.values)}>Nouvelle entree</Button>
+                                        <Button className='btn-warning border btn-sm' onClick={() => handleAdd(props.values)}>Nouvelle entree</Button>
                                     }
                                     {props.values.id != "" &&
-                                        <Button className='btn-warning border ' onClick={() => handleUpdate(props.values)}>Mise a jour</Button>
+                                        <Button className='btn-warning border btn-sm' onClick={() => handleUpdate(props.values)}>Mise a jour</Button>
                                     }
                                 </div>
                             </Form>
@@ -219,12 +227,18 @@ function PointeurAdmin() {
         <>
             <h1 className="lightningBg border rounded text-light text-center sticky z-1">POINTEURS</h1>
             <div className="d-flex">
-                <div className="w-50">
-                    <Forms />
-                </div>
-                <div className="w-50">
-                    <Event />
-                </div>
+                {console.log("showPanel" + showPanel)}
+                {showPanel &&
+                    <>
+                        <div className="w-50">
+                            <Forms />
+                        </div>
+
+                        <div className="w-50">
+                            <Event />
+                        </div>
+                    </>
+                }
 
             </div>
         </>

@@ -5,9 +5,10 @@
 ### DEPENDENCIES
 
     npm install react-router-dom
-    npm install bootstrap@5.3.3
+    npm install react-bootstrap bootstrap
     npm install axios
     npm install react-validation validator
+    npm install formik --save
 
 ### lancement de l'app+serveur applicatif
 

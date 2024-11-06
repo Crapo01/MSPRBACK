@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.capus.securedapi.models.User;
+import com.capus.securedapi.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

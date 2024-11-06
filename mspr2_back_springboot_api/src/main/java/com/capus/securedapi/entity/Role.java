@@ -1,4 +1,4 @@
-package com.capus.securedapi.models;
+package com.capus.securedapi.entity;
 
 import jakarta.persistence.*;
 

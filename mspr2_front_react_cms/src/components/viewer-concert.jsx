@@ -1,25 +1,38 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
+import userService from "../services/user.service";
+import eventBus from "../common/EventBus";
+import authService from "../services/auth.service";
 
 
 
 function ConcertViewer() {
 
     const [datas, setDatas] = useState(false);
+    const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {
-        try {
-
-            const response = await fetch("http://localhost:8080/api/concerts/all");
-            const data = await response.json();
-            if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
-
-        } catch (error) {
-            throw ("Une erreur est survenue dans l'appel API actu: ")
-        }
+        userService.getConcert().then(
+            response => {
+                console.log(response)
+                const data = response.data;
+                if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+            },
+            error => {
+              alert(
+                  error.message                  
+             );
+      
+              if (error.response && error.response.status === 401) {
+                eventBus.dispatch("logout");
+              }
+            }
+          );
     }
 
     useEffect(() => {
+        const user = authService.getCurrentUser();
+        if (user) setShowPanel(true);
         fetchData();        
     }, []);
 
@@ -35,12 +48,15 @@ function ConcertViewer() {
                     <Row className={"m-3"}>
 
                         {datas.map((item) => (
-                            <Col key={item.id} className={"p-1 m-2 border col-12 overflow-auto"} >
-                                <div> {"id: " + item.id + " | nom: " + item.nom + " | origine: " + item.origine}  </div>
-                                <div>{"image link: " + item.image}</div>
+                            <Col key={item.id} className={"p-1 m-2 border d-flex  col-12 overflow-auto"} >
+                                <img src={item.image} alt="" style={{ height: 100 + 'px' }} />                               
+                                <div>
+                                <div> {"nom: " + item.nom + " | origine: " + item.origine}  </div>
                                 <div> {"date: " + item.date + " | heure: " + item.heure + " | scene: " + item.scene}  </div>
                                 <div> {"description: " + item.description}  </div>
-                                <div> {"lien: " + item.lien}  </div>                                
+                                <div> {"lien: " + item.lien}  </div>
+                                </div>
+                                
                             </Col>
                         ))}
                     </Row>
@@ -58,7 +74,7 @@ function ConcertViewer() {
     return (
         <>
             <h1 className="lightningBg border rounded text-light text-center sticky z-1">CONCERTS</h1>
-            <Event />
+            {showPanel&&<Event />}
         </>
     );
 };

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
-import ActuAdmin from "./admin-actu";
-import ConcertAdmin from "./admin-concert";
-import PointeurAdmin from "./admin-pointeur";
+import ActuAdmin from "./editor-actu";
+import ConcertAdmin from "./editor-concert";
+import PointeurAdmin from "./editor-pointeur";
 
 export default class BoardEditor extends Component {
   constructor(props) {

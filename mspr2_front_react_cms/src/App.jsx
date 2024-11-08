@@ -22,6 +22,7 @@ class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
+      showViewerBoard: false,
       showEditorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
@@ -33,9 +34,10 @@ class App extends Component {
 
     if (user) {
       this.setState({
-        currentUser: user,
-        showEditorBoard: user.roles.includes("ROLE_EDITOR") || user.roles.includes("ROLE_ADMIN"),
+        showViewerBoard:user.roles.includes("ROLE_VIEWER"),
+        showEditorBoard: user.roles.includes("ROLE_EDITOR"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        currentUser: user,
       });
     }
 
@@ -51,6 +53,7 @@ class App extends Component {
   logOut() {
     AuthService.logout();
     this.setState({
+      showViewerBoard: false,
       showEditorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
@@ -58,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser, showEditorBoard, showAdminBoard } = this.state;
+    const { currentUser, showViewerBoard,showEditorBoard, showAdminBoard } = this.state;
 
     return (
       <div>
@@ -74,7 +77,7 @@ class App extends Component {
                 </Link>
               </li>
 
-              {currentUser && (
+              {showViewerBoard && (
                 <li className="nav-item border">
                   <Link to={"/viewer"} className="nav-link">
                     Viewer Board

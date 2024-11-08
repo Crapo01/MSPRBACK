@@ -1,17 +1,17 @@
 package com.capus.securedapi.service.impl;
 
 import com.capus.securedapi.dto.UserRoleUpdateDto;
-import com.capus.securedapi.entity.ERole;
 import com.capus.securedapi.entity.Role;
 import com.capus.securedapi.entity.User;
+import com.capus.securedapi.mapper.InformationMapper;
+import com.capus.securedapi.mapper.UserMapper;
 import com.capus.securedapi.repository.UserRepository;
 import com.capus.securedapi.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceIplm implements UserService {
@@ -25,7 +25,10 @@ public class UserServiceIplm implements UserService {
 
     @Override
     public List<UserRoleUpdateDto> getAllUsers() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+
+
+        return users.stream().map(UserMapper::maptoUserRoleUpdateDto).collect(Collectors.toList());
     }
 
     @Override
@@ -36,8 +39,9 @@ public class UserServiceIplm implements UserService {
         user.setRoles(roles);
         userRepository.save(user);
 
-        UserRoleUpdateDto dummyToDelete = new UserRoleUpdateDto();
-        return dummyToDelete;
+        UserRoleUpdateDto updatedDto = UserMapper.maptoUserRoleUpdateDto(user);
+
+        return updatedDto;
     }
 
     @Override

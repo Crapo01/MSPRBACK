@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
+import authService from "../services/auth.service";
 import userService from "../services/user.service";
 import eventBus from "../common/EventBus";
-import authService from "../services/auth.service";
 
-function PointeurAdmin() {
+function ConcertAdmin() {
 
     const [datas, setDatas] = useState(false);
     const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {
-        userService.getPointeur().then(
+        userService.getConcert().then(
             response => {
                 console.log(response)
                 const data = response.data;
@@ -27,10 +27,14 @@ function PointeurAdmin() {
         );
     }
 
-    useEffect(() => {
-        fetchData();
+    useEffect(() => {        
         const user = authService.getCurrentUser();
-        if (user) setShowPanel(user.roles.includes("ROLE_EDITOR") || user.roles.includes("ROLE_ADMIN"));
+        if (user) {
+            if (user.roles.includes("ROLE_EDITOR")){
+                setShowPanel(true);
+                 fetchData(); 
+             } 
+        }
     }, []);
 
 
@@ -45,7 +49,7 @@ function PointeurAdmin() {
         }
 
         async function deleteItem(id) {
-            userService.deletePointeur(id).then(
+            userService.deleteConcert(id).then(
                 response => {
                     console.log(response)
                     const data = response.data;
@@ -70,8 +74,9 @@ function PointeurAdmin() {
 
                         {datas.map((item) => (
                             <Col key={item.id} className={"p-1 mx-3 border col-12 overflow-auto"} >
-                                <div> {"id:" + item.id + " | lon: " + item.lon + " | lat: " + item.lat}  </div>
-                                <div> {"nom: " + item.nom + " | type: " + item.type}  </div>
+                                <div> {"id: " + item.id + " | nom: " + item.nom + " | origine: " + item.origine}  </div>
+                                <div>{"image link: " + item.image}</div>
+                                <div> {"date: " + item.date + " | heure: " + item.heure + " | scene: " + item.scene}  </div>
                                 <div> {"description: " + item.description}  </div>
                                 <div> {"lien: " + item.lien}  </div>
                                 <Button className='btn-danger border btn-sm' onClick={() => handleDelete(item.id)} >Effacer</Button>
@@ -81,7 +86,7 @@ function PointeurAdmin() {
                 </>
             )
         } else {
-            return <h3>Pas de pointeur pour le moment</h3>
+            return <h3>Pas de concert pour le moment</h3>
         }
     }
 
@@ -105,7 +110,7 @@ function PointeurAdmin() {
 
 
         async function createItem(dataString) {
-            userService.createPointeur(dataString).then(
+            userService.createConcert(dataString).then(
                 response => {
                     console.log(response)
                     const data = response.data;
@@ -123,7 +128,7 @@ function PointeurAdmin() {
         }
 
         async function updateItem(dataString, id) {
-            userService.updatePointeur(dataString,id).then(
+            userService.updateConcert(dataString,id).then(
                 response => {
                     console.log(response)
                     const data = response.data;
@@ -143,66 +148,79 @@ function PointeurAdmin() {
         return (
             <div className={"p-3 border rounded bg-light shadow sticky50"}>
                 <section >
+
                     <div className="m-3 p-1 border rounded bg-secondary ">
-                        <h2>Ajouter/modifier un pointeur</h2>
+                        <h2>Mettre à jour un groupe</h2>
                     </div>
                     <Formik
                         initialValues={{
                             id: "",
-                            lon: 2.4433,
-                            lat: 48.8383,
-                            nom: '',
-                            type: 'scene',
-                            description: '',
-                            lien: ''
+                            scene: "principale",
+                            date: "14 juin",
+                            heure: "18:00",
+                            origine: "Europe",
+                            image: "https://i.ebayimg.com/images/g/iF0AAOSw6x9i5MMT/s-l1200.png"
                         }}
+
                     >
                         {props => (
                             <Form>
                                 <div className="d-flex flex-column">
-                                    <div className="d-flex">
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="id">Id (MAJ)</label>
-                                            <Field type="number" id="id" name="id" placeholder="id du pointeur" />
-                                        </div>
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="lat">latitude</label>
-                                            <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" />
-                                        </div>
-
-                                    </div>
-                                    <div className="d-flex">
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="lon">longitude</label>
-                                            <Field type="number" step="0.0001" id="lon" name="lon" placeholder="longitude" />
-                                        </div>
-                                        <div className="d-flex flex-column">
-                                            <label>Type</label>
-                                            <Field name="type" as="select" className="type">
-
-                                                <option value="scene">scene</option>
-
-                                                <option value="alimentation">alimentation</option>
-
-                                                <option value="informations">informations</option>
-
-                                                <option value="toilettes">toilettes</option>
-                                            </Field>
-                                        </div>
+                                    <label htmlFor="id">Id du groupe à mettre à jour</label>
+                                    <Field type="number" id="id" name="id" placeholder="ID du groupe" className="my-3" />
+                                </div>
+                                <div className="d-flex flex-column mx-5">
+                                    <div className="d-flex flex-column">
+                                        <label htmlFor=" lat">nom du groupe</label>
+                                        <Field id="nom" name="nom" placeholder="nom" className="my-3" />
                                     </div>
                                     <div className="d-flex flex-column">
-                                        <label htmlFor="description">description du pointeur</label>
-                                        <Field id="description" name="description" placeholder="description" className="my-3" />
+                                        <label htmlFor=" lat">lien de l'image</label>
+                                        <Field id="image" name="image" placeholder="https:...." className="my-3" />
                                     </div>
                                     <div className="d-flex flex-column">
-                                        <label htmlFor="lien">lien externe</label>
-                                        <Field id="lien" name="lien" placeholder="lien" className="my-3" />
+                                        <label htmlFor="nom">description</label>
+                                        <Field id="description" name="description" placeholder="Entrez une description" className="my-3" />
                                     </div>
-                                    <div className="d-flex flex-column">
-                                        <label htmlFor="nom">nom du pointeur</label>
-                                        <Field id="nom" name="nom" placeholder="nom du pointeur" className="my-2" />
-                                    </div>
+                                    <div>
+                                        <label className="my-3">origine</label>
+                                        <Field name="origine" as="select" >
+                                            <option></option>
+                                            <option value="Europe">Europe</option>
+                                            <option value="Amerique">Amerique</option>
+                                            <option value="Afrique">Afrique</option>
+                                            <option value="Asie">Asie</option>
+                                            <option value="Australie">Australie</option>
+                                        </Field>
+                                        <label className="my-3">date</label>
+                                        <Field name="date" as="select" >
+                                            <option value="14 juin">14 Juin</option>
+                                            <option value="15 juin">15 Juin</option>
+                                            <option value="16 juin">16 Juin</option>
+                                        </Field>
 
+                                        <label className="my-3">heure</label>
+                                        <Field name="heure" as="select" >
+                                            <option value="18:00">18:00</option>
+                                            <option value="19:00">19:00</option>
+                                            <option value="20:00">20:00</option>
+                                            <option value="21:00">21:00</option>
+                                        </Field>
+
+                                        <label className="my-3">scene</label>
+                                        <Field name="scene" as="select" >
+                                            <option value="principale">principale</option>
+                                            <option value="nord">nord</option>
+                                            <option value="est">est</option>
+                                            <option value="sud">sud</option>
+                                            <option value="ouest">ouest</option>
+                                        </Field>
+
+                                        <div className="d-flex flex-column">
+                                            <label htmlFor="lien">lien externe</label>
+                                            <Field id="lien" name="lien" placeholder="lien" className="my-3" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className=' d-flex justify-content-end'>
                                     {props.values.id == "" &&
@@ -214,6 +232,7 @@ function PointeurAdmin() {
                                 </div>
                             </Form>
                         )}
+
                     </Formik>
                 </section>
             </div>
@@ -225,7 +244,7 @@ function PointeurAdmin() {
 
     return (
         <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">POINTEURS</h1>
+            <h1 className="lightningBg border rounded text-light text-center sticky z-1">CONCERTS</h1>
             <div className="d-flex">
                 {console.log("showPanel" + showPanel)}
                 {showPanel &&
@@ -245,4 +264,4 @@ function PointeurAdmin() {
     );
 };
 
-export default PointeurAdmin;
+export default ConcertAdmin;

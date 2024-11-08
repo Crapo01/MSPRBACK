@@ -1,8 +1,8 @@
 package com.capus.securedapi.service;
 
-import com.capus.securedapi.dto.PointeurDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.entity.Role;
+import com.capus.securedapi.entity.User;
 
 
 import java.util.List;

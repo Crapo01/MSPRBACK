@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
+import UserAdmin from "./admin-users";
 
 export default class BoardAdmin extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ export default class BoardAdmin extends Component {
       <div className="container">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
+          <UserAdmin/>
         </header>
       </div>
     );

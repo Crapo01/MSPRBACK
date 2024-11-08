@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.capus.securedapi.dto.InformationDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.service.UserService;
 import org.slf4j.Logger;
@@ -141,6 +142,14 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
+  //GET ALL ACCOUNTS REST API
+  @GetMapping("all")
+  // ALL authorized
+  public ResponseEntity<List<UserRoleUpdateDto>> getAll() {
+    List<UserRoleUpdateDto> user = userService.getAllUsers();
+    return ResponseEntity.ok(user);
+  }
+
   @DeleteMapping("{id}")
   public ResponseEntity<?> deleteUser(@PathVariable Long id) {
     logger.info("delete end point reached");
@@ -171,6 +180,7 @@ public class AuthController {
       Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(viewerRole);
+
     } else {
       strRoles.forEach(role -> {
         switch (role) {
@@ -193,8 +203,8 @@ public class AuthController {
         }
       });
     }
-    userService.updateUser(id,roles);
-    return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+    UserRoleUpdateDto updatedDto = userService.updateUser(id,roles);
+    return ResponseEntity.ok(new MessageResponse("User "+updatedDto.getUsername()+" updated successfully!"));
   }
 
 }

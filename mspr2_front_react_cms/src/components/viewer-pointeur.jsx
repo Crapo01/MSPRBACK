@@ -8,7 +8,9 @@ function PointeurViewer() {
  const [showPanel, setShowPanel] = useState(false);
     useEffect(() => {
         const user = authService.getCurrentUser();
-        if (user) setShowPanel(true);
+        if (user) {
+            setShowPanel(user.roles.includes("ROLE_VIEWER"));            
+        }  
     }, []);
 
 

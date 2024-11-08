@@ -5,6 +5,7 @@ const API_TEST_URL = 'http://localhost:8080/api/test/';
 const API_INFO_URL = 'http://localhost:8080/api/informations/';
 const API_CONCERT_URL = 'http://localhost:8080/api/concerts/';
 const API_POINTEUR_URL = 'http://localhost:8080/api/pointeurs/';
+const API_AUTH_URL = 'http://localhost:8080/api/auth/';
 
 class UserService {
   getPublicContent() {
@@ -90,6 +91,25 @@ class UserService {
   deleteInfo(id){
     console.log("service delete"+id)
     return axios.delete(API_INFO_URL + id, { headers: authHeader() });
+  }
+
+  ////////////////////////////////////////////////////////////////////////// auth section (users)
+
+  getUsers() {
+    return axios.get(API_AUTH_URL + 'all');
+  }
+
+  deleteUser(id){
+    console.log("service delete"+id)
+    return axios.delete(API_AUTH_URL + id, { headers: authHeader() });
+  }
+
+  updateUser(data,id){
+    console.log(" service create "+id)
+    console.log(data)
+    console.log(authHeader())
+    
+    return axios.put(API_AUTH_URL + id,data, { headers: authHeader() });
   }
 
 }

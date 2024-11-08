@@ -41,8 +41,12 @@ function ActuViewer() {
 
     useEffect(() => {
         const user = authService.getCurrentUser();
-        if (user) setShowPanel(true);
-        fetchData();        
+        if (user) {
+            if (user.roles.includes("ROLE_VIEWER")){
+               setShowPanel(true);
+                fetchData(); 
+            }            
+        }       
     }, []);
 
 

@@ -1,5 +1,6 @@
 package com.capus.securedapi.service.impl;
 
+import com.capus.securedapi.dto.UserDetailsDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.entity.Role;
 import com.capus.securedapi.entity.User;
@@ -24,11 +25,9 @@ public class UserServiceIplm implements UserService {
 
 
     @Override
-    public List<UserRoleUpdateDto> getAllUsers() {
+    public List<UserDetailsDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-
-
-        return users.stream().map(UserMapper::maptoUserRoleUpdateDto).collect(Collectors.toList());
+        return users.stream().map(UserMapper::maptoUserDetailsDto).collect(Collectors.toList());
     }
 
     @Override

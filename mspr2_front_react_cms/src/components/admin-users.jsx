@@ -32,10 +32,10 @@ function UserAdmin() {
     useEffect(() => {
         const user = authService.getCurrentUser();
         if (user) {
-            if (user.roles.includes("ROLE_ADMIN")){
+            if (user.roles.includes("ROLE_ADMIN")) {
                 setShowPanel(true);
-                fetchData(); 
-             } 
+                fetchData();
+            }
         }
     }, []);
 
@@ -50,8 +50,8 @@ function UserAdmin() {
             }
         }
 
-        async function handleUpdate(values,id) {
-            await new Promise((r) => setTimeout(r, 500));            
+        async function handleUpdate(values, id) {
+            await new Promise((r) => setTimeout(r, 500));
             const dataString = JSON.stringify(values, null, '  ');
             console.log(values)
             console.log(dataString)
@@ -61,16 +61,17 @@ function UserAdmin() {
         }
 
         async function updateItem(dataString, id) {
-            userService.updateUser(dataString,id).then(
+            userService.updateUser(dataString, id).then(
                 response => {
                     console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
+                    alert("updated")
                     window.location.reload()
                 },
                 error => {
                     console.log(error.message);
-    
+
                     if (error.response && error.response.status === 401) {
                         eventBus.dispatch("logout");
                     }
@@ -113,29 +114,31 @@ function UserAdmin() {
                                             ))}
                                         </div>
                                         <div>
-                                            <Button className='btn-danger m-2 border btn-sm' onClick={() => handleDelete(item.id)} >Effacer</Button>
+                                            {item.id != 1 && <Button className='btn-danger m-2 border btn-sm' onClick={() => handleDelete(item.id)} >Effacer</Button>}
                                         </div>
                                     </div>
 
                                 </Col>
-                                <Col className={"p-1   col-6 overflow-auto"}>
-                                    <Formik initialValues={{ role: [] }}>
-                                        {props => (
-                                            <Form>
+                                {item.id != 1 &&
+                                    <Col className={"p-1   col-6 overflow-auto"}>
+                                        <Formik initialValues={{ role: ["none"] }}>
+                                            {props => (
+                                                <Form>
 
-                                                <label className="my-3">ROLE</label>
-                                                <Field name="role" as="select" multiple>                                                    
-                                                    <option value="admin">admin</option>
-                                                    <option value="editor">editor</option>
-                                                    <option value="viewer">viewer</option>
-                                                </Field>
+                                                    <label className="my-3">ROLE</label>
+                                                    <Field name="role" as="select" multiple>
+                                                        <option value="admin">admin</option>
+                                                        <option value="editor">editor</option>
+                                                        <option value="viewer">viewer</option>
+                                                    </Field>
 
-                                                {props.values.role!=[] && <Button className='btn-warning border m-2 btn-sm' onClick={() => handleUpdate(props.values,item.id)}>Mise a jour</Button>}
+                                                    {props.values.role != [] && <Button className='btn-warning border m-2 btn-sm' onClick={() => handleUpdate(props.values, item.id)}>Mise a jour</Button>}
 
-                                            </Form>
-                                        )}
-                                    </Formik>
-                                </Col>
+                                                </Form>
+                                            )}
+                                        </Formik>
+                                    </Col>
+                                }
                             </Row>
                         ))}
                     </Row>

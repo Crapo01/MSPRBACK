@@ -93,7 +93,7 @@ function Programmation() {
                                 {filteredEvents.map((item) => (
 
                                     <Col className="col-md-6 col-lg-4" key={item.id} >
-                                        <div className={"m-3 h-100 bg-secondary"}>
+                                        <div className={"m-3 bg-secondary"}>
                                             <div className={"p-2 border rounded card metalBg shadow "} >
                                                 <h2 className="card-title"> {item.nom}</h2>
                                                 <p className="h5 text-light">le {item.date} à {item.heure}</p>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.capus.securedapi.dto.InformationDto;
+import com.capus.securedapi.dto.UserDetailsDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.service.UserService;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -110,9 +112,9 @@ public class AuthController {
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
-      Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+      Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(viewerRole);
+      roles.add(noneRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
@@ -128,10 +130,18 @@ public class AuthController {
           roles.add(editorRole);
 
           break;
-        default:
+
+        case "viewer":
           Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(viewerRole);
+
+            break;
+
+        default:
+          Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(noneRole);
         }
       });
     }
@@ -144,13 +154,14 @@ public class AuthController {
 
   //GET ALL ACCOUNTS REST API
   @GetMapping("all")
-  // ALL authorized
-  public ResponseEntity<List<UserRoleUpdateDto>> getAll() {
-    List<UserRoleUpdateDto> user = userService.getAllUsers();
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<List<UserDetailsDto>> getAll() {
+    List<UserDetailsDto> user = userService.getAllUsers();
     return ResponseEntity.ok(user);
   }
 
   @DeleteMapping("{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> deleteUser(@PathVariable Long id) {
     logger.info("delete end point reached");
     logger.info(id.toString());
@@ -164,6 +175,7 @@ public class AuthController {
   }
 
   @PutMapping("{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody UserRoleUpdateDto userRoleUpdateDto) {
     logger.info("update end point reached");
     logger.info(id.toString());
@@ -177,34 +189,42 @@ public class AuthController {
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null || strRoles.isEmpty() ) {
-      Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+      Role noneRole = roleRepository.findByName(ERole.ROLE_VIEWER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(viewerRole);
 
-    } else {
-      strRoles.forEach(role -> {
-        switch (role) {
-          case "admin":
-            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
+        roles.add(noneRole);
+      } else {
+        strRoles.forEach(role -> {
+          switch (role) {
+            case "admin":
+              Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              roles.add(adminRole);
 
-            break;
-          case "editor":
-            Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(editorRole);
+              break;
+            case "editor":
+              Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              roles.add(editorRole);
 
-            break;
-          default:
-            Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(viewerRole);
-        }
-      });
-    }
+              break;
+
+            case "viewer":
+              Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              roles.add(viewerRole);
+
+              break;
+
+            default:
+              Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
+                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              roles.add(noneRole);
+          }
+        });
+      }
     UserRoleUpdateDto updatedDto = userService.updateUser(id,roles);
-    return ResponseEntity.ok(new MessageResponse("User "+updatedDto.getUsername()+" updated successfully!"));
+    return ResponseEntity.ok(new MessageResponse("User "+updatedDto.getId()+" updated successfully!"));
   }
 
 }

@@ -13,10 +13,18 @@ import Mentions from "./pages/Mentions"
 import Concert from "./pages/Concert"
 
 
+import Register from "./components/register.component";
+import Profile from "./components/profile.component";
+import Login from "./components/login.component"
+
+
 
 
 function App() {
   const [groupe,setGroupe]= useState();
+  
+  
+  
   
   return (    
     <ConcertContext.Provider value={{
@@ -26,6 +34,7 @@ function App() {
         
        <Container >
       <Header></Header>
+      <div className="maxheight">
 
       <Routes>
         <Route path="/" element={<Home />} />               
@@ -34,9 +43,11 @@ function App() {
         <Route path="/Programme" element={<Programme />} />
         <Route path="/Details" element={<Details />} />        
         <Route path="/Mentions" element={<Mentions />} />
-        
-              
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
+       </div>       
       <Footer></Footer>
       </Container> 
       

@@ -16,13 +16,13 @@ public class TestController {
   }
 
   @GetMapping("/viewer")
-  @PreAuthorize("hasRole('VIEWER') or hasRole('EDITOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('VIEWER')")
   public String viewerAccess() {
     return "Viewer Content.";
   }
 
   @GetMapping("/editor")
-  @PreAuthorize("hasRole('EDITOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('EDITOR')")
   public String editorAccess() {
     return "Editor Content.";
   }

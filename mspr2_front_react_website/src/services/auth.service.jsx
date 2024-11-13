@@ -30,6 +30,16 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;
   }
+
+  verifyCaptcha(token) {
+    console.log("send verif request")
+    console.log(token)
+    return axios.post(API_URL + "verify", {
+      token
+    });
+
+  }
 }
+
 
 export default new AuthService();

@@ -6,12 +6,14 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 
 import { withRouter } from '../common/with-router';
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const required = value => {
-  if (!value) {
+  if (!value) {    
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        This field is required!        
       </div>
     );
   }
@@ -28,7 +30,8 @@ class Login extends Component {
       username: "",
       password: "",
       loading: false,
-      message: ""
+      message: "",
+      recaptcharef: React.createRef()
     };
   }
 
@@ -44,9 +47,7 @@ class Login extends Component {
     });
   }
 
-  handleLogin(e) {
-    e.preventDefault();
-
+  handleSendRequestToApi(){
     this.setState({
       message: "",
       loading: true
@@ -79,6 +80,41 @@ class Login extends Component {
         loading: false
       });
     }
+
+  }
+
+  handleLogin(e) {
+    e.preventDefault();
+
+    let token = this.state.recaptcharef.current.props.grecaptcha.getResponse()
+    this.state.recaptcharef.current.props.grecaptcha.reset()
+
+    if (!token) {
+      alert('Please Submit Captcha')
+      return
+    }
+
+    AuthService.verifyCaptcha(token)
+    .then(
+      response => {
+      // console.log(response.data)
+      // console.log(response )
+      if (response.data.success){        
+        this.handleSendRequestToApi()
+      } else 
+      {
+        alert("captcha failed")
+        window.location.reload();
+      }
+      },
+       error => {
+        
+        alert("reCaptcha not verified: error "+error);
+        window.location.reload();
+      }
+  
+      )
+
   }
 
   render() {
@@ -120,6 +156,11 @@ class Login extends Component {
                 validations={[required]}
               />
             </div>
+
+            <ReCAPTCHA
+              ref={this.state.recaptcharef}
+              sitekey={import.meta.env.VITE_SITE_KEY}              
+            />
 
             <div className="form-group">
               <button

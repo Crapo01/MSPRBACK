@@ -3,7 +3,7 @@ import { Image, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 
-function CarteMini() {
+function CarteMini({ sendDataToParent }) {
 
 
     const [datas, setDatas] = useState([]);
@@ -25,7 +25,7 @@ function CarteMini() {
     function Getlatlon() {
         const map = useMap();
         map.on('click', function(ev) {
-            alert(ev.latlng); // ev is an event object (MouseEvent in this case)
+            sendDataToParent({lon: ev.latlng.lng,lat: ev.latlng.lat}) // ev is an event object (MouseEvent in this case)
         });
     }
 

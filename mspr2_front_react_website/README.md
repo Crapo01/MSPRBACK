@@ -45,4 +45,43 @@ pour installer toutes les dependances:
   # deploiement sur serveur WEB
 
   transferer l'ensemble du dossier dist via  filezilla dans le dossier HTDOCS du serveur web
-  
+
+  # MSPR2 development steps
+
+  ## Connect to API
+
+  no changes in code:
+
+  updated end points:
+
+  API concert end point:  
+  api/concerts/all"
+
+  API actus end point:  
+  api/informations/all
+
+  API pointeur end point:  
+  api/pointeurs/all
+
+## Security
+
+added signup/login/logout
+
+source:  
+[react-jwt-auth](https://www.bezkoder.com/react-jwt-auth/)
+
+users are registered with ROLE_NONE role automatically.
+
+## reCAPTCHA implementation
+
+[react recaptcha](https://shejanmahamud.medium.com/implement-google-recaptcha-in-react-app-a9b8e3dc26ed)  
+[useref in class components](https://stackoverflow.com/questions/62499061/how-to-use-react-useref-in-class-component) 
+
+
+
+### backend validation
+
+[springboot recaptcha validation](https://www.pixeltrice.com/recaptcha-validation-in-registration-form-using-spring-boot-application/)
+
+endpoint api/auth/verify
+

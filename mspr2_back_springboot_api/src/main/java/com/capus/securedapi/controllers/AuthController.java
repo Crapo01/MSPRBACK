@@ -4,9 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.capus.securedapi.dto.InformationDto;
+
 import com.capus.securedapi.dto.UserDetailsDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
+import com.capus.securedapi.payload.request.CaptchaToken;
+import com.capus.securedapi.payload.response.CaptchaResponseType;
 import com.capus.securedapi.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +19,8 @@ import jakarta.validation.Valid;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +28,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -38,6 +43,7 @@ import com.capus.securedapi.repository.RoleRepository;
 import com.capus.securedapi.repository.UserRepository;
 import com.capus.securedapi.security.jwt.JwtUtils;
 import com.capus.securedapi.security.services.UserDetailsImpl;
+import org.springframework.web.client.RestTemplate;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -64,6 +70,10 @@ public class AuthController {
 
   private UserService userService;
 
+  private static final String GOOGLE_RECAPTCHA_ENDPOINT = "https://www.google.com/recaptcha/api/siteverify";
+  @Value("${capus.app.siteSecret}")
+  private String siteSecret;
+
   public AuthController(UserService userService) {
     this.userService = userService;
   }
@@ -72,76 +82,76 @@ public class AuthController {
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
-    
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(item -> item.getAuthority())
-        .collect(Collectors.toList());
 
-    return ResponseEntity.ok(new JwtResponse(jwt, 
-                         userDetails.getId(), 
-                         userDetails.getUsername(), 
-                         userDetails.getEmail(), 
-                         roles));
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    List<String> roles = userDetails.getAuthorities().stream()
+            .map(item -> item.getAuthority())
+            .collect(Collectors.toList());
+
+    return ResponseEntity.ok(new JwtResponse(jwt,
+            userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getEmail(),
+            roles));
   }
 
   @PostMapping("signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
-          .badRequest()
-          .body(new MessageResponse("Error: Username is already taken!"));
+              .badRequest()
+              .body(new MessageResponse("Error: Username is already taken!"));
     }
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity
-          .badRequest()
-          .body(new MessageResponse("Error: Email is already in use!"));
+              .badRequest()
+              .body(new MessageResponse("Error: Email is already in use!"));
     }
 
     // Create new user's account
-    User user = new User(signUpRequest.getUsername(), 
-               signUpRequest.getEmail(),
-               encoder.encode(signUpRequest.getPassword()));
+    User user = new User(signUpRequest.getUsername(),
+            signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()));
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
       Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(noneRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
+          case "admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
 
-          break;
-        case "editor":
-          Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(editorRole);
-
-          break;
-
-        case "viewer":
-          Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
-                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(viewerRole);
+            break;
+          case "editor":
+            Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(editorRole);
 
             break;
 
-        default:
-          Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(noneRole);
+          case "viewer":
+            Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(viewerRole);
+
+            break;
+
+          default:
+            Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(noneRole);
         }
       });
     }
@@ -188,43 +198,56 @@ public class AuthController {
     Set<String> strRoles = userRoleUpdateDto.getRole();
     Set<Role> roles = new HashSet<>();
 
-    if (strRoles == null || strRoles.isEmpty() ) {
+    if (strRoles == null || strRoles.isEmpty()) {
       Role noneRole = roleRepository.findByName(ERole.ROLE_VIEWER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
-        roles.add(noneRole);
-      } else {
-        strRoles.forEach(role -> {
-          switch (role) {
-            case "admin":
-              Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-              roles.add(adminRole);
+      roles.add(noneRole);
+    } else {
+      strRoles.forEach(role -> {
+        switch (role) {
+          case "admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
 
-              break;
-            case "editor":
-              Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
-                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-              roles.add(editorRole);
+            break;
+          case "editor":
+            Role editorRole = roleRepository.findByName(ERole.ROLE_EDITOR)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(editorRole);
 
-              break;
+            break;
 
-            case "viewer":
-              Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
-                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-              roles.add(viewerRole);
+          case "viewer":
+            Role viewerRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(viewerRole);
 
-              break;
+            break;
 
-            default:
-              Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
-                      .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-              roles.add(noneRole);
-          }
-        });
-      }
-    UserRoleUpdateDto updatedDto = userService.updateUser(id,roles);
-    return ResponseEntity.ok(new MessageResponse("User "+updatedDto.getId()+" updated successfully!"));
+          default:
+            Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(noneRole);
+        }
+      });
+    }
+    UserRoleUpdateDto updatedDto = userService.updateUser(id, roles);
+    return ResponseEntity.ok(new MessageResponse("User " + updatedDto.getId() + " updated successfully!"));
+  }
+
+  @PostMapping("/verify")
+  public ResponseEntity<?> verifyRecaptcha(@RequestBody CaptchaToken token) {
+    RestTemplate restTemplate = new RestTemplate();
+    logger.info(token.getToken());
+    MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+    requestMap.add("secret", siteSecret);
+    requestMap.add("response", token.getToken());
+
+    CaptchaResponseType apiResponse = restTemplate.postForObject(GOOGLE_RECAPTCHA_ENDPOINT, requestMap, CaptchaResponseType.class);
+    
+    return ResponseEntity.ok(apiResponse);
   }
 
 }

@@ -10,6 +10,11 @@ function PointeurAdmin() {
 
     const [datas, setDatas] = useState(false);
     const [showPanel, setShowPanel] = useState(false);
+    const [dataFromChild, setDataFromChild] = useState({lat: 0 ,lon: 0 });
+
+  function handleDataFromChild(data) {
+    setDataFromChild(data);
+  }
 
     async function fetchData() {
         userService.getPointeur().then(
@@ -96,6 +101,7 @@ function PointeurAdmin() {
             await new Promise((r) => setTimeout(r, 500));
             const dataString = JSON.stringify(values, null, '  ');
             if (window.confirm('Confirmez vous la nouvelle entrée?')) {
+                console.log(dataString)
                 createItem(dataString)
             }
         }
@@ -154,8 +160,8 @@ function PointeurAdmin() {
                     <Formik
                         initialValues={{
                             id: "",
-                            lon: 2.4433,
-                            lat: 48.8383,
+                            lon: dataFromChild.lon,
+                            lat: dataFromChild.lat,
                             nom: '',
                             type: 'scene',
                             description: '',
@@ -170,18 +176,7 @@ function PointeurAdmin() {
                                             <label htmlFor="id">Id (MAJ)</label>
                                             <Field type="number" id="id" name="id" placeholder="id du pointeur" />
                                         </div>
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="lat">latitude</label>
-                                            <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" />
-                                        </div>
-
-                                    </div>
-                                    <div className="d-flex">
-                                        <div className="d-flex flex-column">
-                                            <label htmlFor="lon">longitude</label>
-                                            <Field type="number" step="0.0001" id="lon" name="lon" placeholder="longitude" />
-                                        </div>
-                                        <div className="d-flex flex-column">
+                                        <div className="d-flex flex-column mx-3">
                                             <label>Type</label>
                                             <Field name="type" as="select" className="type">
 
@@ -193,8 +188,20 @@ function PointeurAdmin() {
 
                                                 <option value="toilettes">toilettes</option>
                                             </Field>
-                                        </div>
+
                                     </div>
+                                    </div>
+                                    <div className="d-flex">
+                                        <div className="d-flex flex-column">
+                                            <label htmlFor="lon">longitude</label>
+                                            <Field type="number" step="0.0001" id="lon" name="lon" placeholder="longitude" value={dataFromChild.lon} />
+                                        </div>
+                                        <div className="d-flex flex-column mx-3">
+                                            <label htmlFor="lat">latitude</label>
+                                            <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" value={dataFromChild.lat} />
+                                        </div>
+                                        </div>
+                                    <p>Cliquer sur la carte pour recuperer les coordonnées</p>
                                     <div className="d-flex flex-column">
                                         <label htmlFor="description">description du pointeur</label>
                                         <Field id="description" name="description" placeholder="description" className="my-3" />
@@ -240,7 +247,7 @@ function PointeurAdmin() {
                         </div>
 
                         <div className="w-50">
-                            <CarteMini/>
+                            <CarteMini sendDataToParent={handleDataFromChild}/>
                             <Event />
                         </div>
                     </>

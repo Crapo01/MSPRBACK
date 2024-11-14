@@ -5,8 +5,8 @@ import com.capus.securedapi.entity.Concert;
 
 public class ConcertMapper {
 	public static Concert mapToConcert(ConcertDto concertDto){
-		Concert concert = new Concert(concertDto.getId(), concertDto.getNom(), concertDto.getImage(), concertDto.getDescription(), concertDto.getOrigine(), concertDto.getDate(), concertDto.getHeure(), concertDto.getScene(), concertDto.getLien());
-		return concert;
+		return new Concert(concertDto.getId(), concertDto.getNom(), concertDto.getImage(), concertDto.getDescription(), concertDto.getOrigine(), concertDto.getDate(), concertDto.getHeure(), concertDto.getScene(), concertDto.getLien());
+
 	}
 	
 	public static ConcertDto mapToConcertDto(Concert concert){

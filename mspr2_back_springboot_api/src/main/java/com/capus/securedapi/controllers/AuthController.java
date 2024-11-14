@@ -199,7 +199,7 @@ public class AuthController {
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null || strRoles.isEmpty()) {
-      Role noneRole = roleRepository.findByName(ERole.ROLE_VIEWER)
+      Role noneRole = roleRepository.findByName(ERole.ROLE_NONE)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
       roles.add(noneRole);
@@ -233,8 +233,8 @@ public class AuthController {
         }
       });
     }
-    UserRoleUpdateDto updatedDto = userService.updateUser(id, roles);
-    return ResponseEntity.ok(new MessageResponse("User " + updatedDto.getId() + " updated successfully!"));
+    User updatedUser = userService.updateUser(id, roles);
+    return ResponseEntity.ok(new MessageResponse("User " + updatedUser.getRoles().toString() + " updated successfully!"));
   }
 
   @PostMapping("/verify")

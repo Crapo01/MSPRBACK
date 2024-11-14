@@ -31,16 +31,14 @@ public class UserServiceIplm implements UserService {
     }
 
     @Override
-    public UserRoleUpdateDto updateUser(Long id,Set<Role> roles) {
+    public User updateUser(Long id,Set<Role> roles) {
         User user = userRepository
                 .findById(id)
                 .orElseThrow(()->new RuntimeException(" No User found"));
         user.setRoles(roles);
         userRepository.save(user);
 
-        UserRoleUpdateDto updatedDto = UserMapper.maptoUserRoleUpdateDto(user);
-
-        return updatedDto;
+        return user;
     }
 
     @Override

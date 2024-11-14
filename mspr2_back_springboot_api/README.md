@@ -11,4 +11,4 @@ resource:
 
 [send-push-from-spring-boot-backend-to-react](https://hpcodes.medium.com/send-messages-from-spring-boot-backend-to-reactjs-app-using-websocket-4120f6979c9b)
 
-https://www.npmjs.com/package/react-stomp-hooks
+

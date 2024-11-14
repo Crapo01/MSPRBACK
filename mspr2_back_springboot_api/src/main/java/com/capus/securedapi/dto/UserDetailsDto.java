@@ -9,17 +9,12 @@ import java.util.Set;
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public class UserDetailsDto {
         private long id;
         private String username;
         private Set<Role> roles = new HashSet<>();
 
-        public UserDetailsDto(Long id, String username, Set<Role> roles) {
-        }
-
-
-        public UserDetailsDto() {
-
-        }
     }
 

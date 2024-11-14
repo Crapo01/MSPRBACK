@@ -13,6 +13,6 @@ import java.util.Set;
 public interface UserService {
     //User createUser(User user);
     List<UserDetailsDto> getAllUsers();
-    UserRoleUpdateDto updateUser(Long id, Set<Role> roles);
+    User updateUser(Long id, Set<Role> roles);
     void deleteUser(Long id);
 }

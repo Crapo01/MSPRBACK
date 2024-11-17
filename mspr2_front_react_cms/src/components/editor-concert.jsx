@@ -245,21 +245,21 @@ function ConcertAdmin() {
     return (
         <>
             <h1 className="lightningBg border rounded text-light text-center sticky z-1">CONCERTS</h1>
-            <div className="d-flex">
-                {console.log("showPanel" + showPanel)}
+                
                 {showPanel &&
+            <div className="d-lg-flex">
                     <>
-                        <div className="w-50">
+                        <div >
                             <Forms />
                         </div>
 
-                        <div className="w-50">
+                        <div >
                             <Event />
                         </div>
                     </>
-                }
+               
 
-            </div>
+            </div> }
         </>
     );
 };

@@ -4,6 +4,7 @@ import { Field, Form, Formik } from "formik";
 import userService from "../services/user.service";
 import eventBus from "../common/EventBus";
 import authService from "../services/auth.service";
+import Notifications from "./notification";
 
 
 function ActuAdmin() {
@@ -258,21 +259,23 @@ function ActuAdmin() {
 
     return (
         <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">INFORMATIONS</h1>
-            <div className="d-flex">
-                {console.log("showPanel" + showPanel)}
+            <h1 className="lightningBg border rounded text-light text-center sticky z-1">NOTIFICATIONS</h1>
+                
                 {showPanel &&
                     <>
-                        <div className="w-50">
+                    <Notifications/>
+                    <h1 className="lightningBg border rounded text-light text-center sticky z-1">INFORMATIONS</h1>
+            <div className="d-lg-flex">
+                        <div >
                             <Forms />
                         </div>
 
-                        <div className="w-50">
+                        <div >
                             <Event />
                         </div>
+            </div>
                     </>
                 }
-            </div>
         </>
     );
 };

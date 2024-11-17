@@ -23,6 +23,7 @@
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.23.1",
     "react-stomp-hooks": "^3.0.1",
+    "react-toastify": "^10.0.6",
     "react-validation": "^3.0.7",
     "validator": "^13.12.0"
   },

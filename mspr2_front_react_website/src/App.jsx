@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Link } from "react-router-dom"
 import Header from "./components/Header"
 import Map from "./pages/Map"
 import Home from "./pages/Home"
@@ -17,6 +17,8 @@ import Register from "./components/register.component";
 import Profile from "./components/profile.component";
 import Login from "./components/login.component"
 import { StompSessionProvider, useStompClient, useSubscription } from "react-stomp-hooks"
+import { toast, ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -24,22 +26,43 @@ import { StompSessionProvider, useStompClient, useSubscription } from "react-sto
 function App() {
   const [groupe, setGroupe] = useState();
 
+
+
   const PushNotification = () => {
     const [message, setMessage] = useState("");
+
+    const CustomToastWithLink = () => (
+      <div>
+        <p>{message.msg}</p>
+        {/* <Link to="/Concert">+ D'infos ici</Link> */}
+        {message.lnk&&<a href={message.lnk}>+ D'infos ici</a>}
+      </div>
+    );
+
     // Subscribe to the topic that we have opened in our spring boot app
-    useSubscription('/topic/reply', (message) => { setMessage(message.body) });
-console.log("message"+message)
-    return (
-      message!="reset" && message && (
-        <div className="bg-light border rounded shadow border-danger border-5 h4">
-          <h2>MESSAGE IMPORTANT:</h2>
-          <div > {message}</div>
-        </div>
-        )
-    )
+    useSubscription('/topic/reply', (notif) => { setMessage(JSON.parse(notif.body)) });
+    if (message){
+      console.log(message)
+    
+    }
+    
+    message ? toast.error
+      (CustomToastWithLink, {
+        position: "bottom-right",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: 0,
+        theme: "colored",
+      }) : null;
   }
 
-  
+
+
+
+
 
 
   return (
@@ -49,10 +72,20 @@ console.log("message"+message)
     }}>
 
       <Container >
+        <ToastContainer
+          position="bottom-right"
+          autoClose={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          theme="colored"
+        />
         <Header></Header>
         <StompSessionProvider
           url={'http://localhost:8080/ws-endpoint'}>
-          <PushNotification />          
+          <PushNotification />
         </StompSessionProvider>
         <div className="maxheight">
 

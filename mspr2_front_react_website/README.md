@@ -95,3 +95,8 @@ resource:
 https://www.npmjs.com/package/react-stomp-hooks
 
 added publish message TODO MESSAGING QUEUE LOGIC
+
+https://www.npmjs.com/package/react-toastify
+
+  npm install --save react-toastify
+

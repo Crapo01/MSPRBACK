@@ -238,15 +238,15 @@ function PointeurAdmin() {
     return (
         <>
             <h1 className="lightningBg border rounded text-light text-center sticky z-1">POINTEURS</h1>
-            <div className="d-flex">
+            <div className="d-lg-flex">
                 {console.log("showPanel" + showPanel)}
                 {showPanel &&
                     <>
-                        <div className="w-50">
+                        <div >
                             <Forms />
                         </div>
 
-                        <div className="w-50">
+                        <div >
                             <CarteMini sendDataToParent={handleDataFromChild}/>
                             <Event />
                         </div>

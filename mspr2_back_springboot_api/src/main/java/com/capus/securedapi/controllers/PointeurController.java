@@ -28,7 +28,7 @@ public class PointeurController {
             description = "ONLY FOR EDITORS.",
             tags = { "Editor only" })
     @PostMapping
-    @PreAuthorize("hasRole('EDITOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('EDITOR')")
     public ResponseEntity<PointeurDto> addPointeur(@RequestBody PointeurDto pointeurDto) {
         return new ResponseEntity<>(pointeurService.createPointeur(pointeurDto), HttpStatus.CREATED);
 

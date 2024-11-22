@@ -105,7 +105,7 @@ function UserAdmin() {
 
                         {datas.map((item) => (
                             <Row className={"p-1  border d-flex "}>
-                                <Col key={item.id} className={"p-1   col-6 overflow-auto"} >
+                                <Col key={item.id} className={"p-1  col-12 col-md-6 overflow-auto"} >
                                     <div className="d-flex">
                                         <div>
                                             <div> {"id:" + item.id + " |        username: " + item.username}  </div>
@@ -120,7 +120,7 @@ function UserAdmin() {
 
                                 </Col>
                                 {item.id != 1 &&
-                                    <Col className={"p-1   col-6 overflow-auto"}>
+                                    <Col className={"p-1  col-12 col-md-6 overflow-auto"}>
                                         <Formik initialValues={{ role: ["none"] }}>
                                             {props => (
                                                 <Form>

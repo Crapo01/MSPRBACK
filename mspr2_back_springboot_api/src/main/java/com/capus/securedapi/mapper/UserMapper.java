@@ -10,7 +10,7 @@ public class UserMapper {
 
     public static UserDetailsDto maptoUserDetailsDto(User user) {
 
-        UserDetailsDto mappedDto = new UserDetailsDto(user.getId(), user.getUsername(), user.getRoles());
+        UserDetailsDto mappedDto = new UserDetailsDto(user.getId(), user.getUsername(), user.getEmail(), user.getRoles());
 
         // fonctionne bien comme ça
 //        UserDetailsDto mappedDto = new UserDetailsDto();

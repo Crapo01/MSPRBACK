@@ -65,3 +65,10 @@ label {
 .maxheight{
   min-height: 80vh;
 }
+
+.img100px {
+ 
+    
+    width: auto;
+  max-height: 100px;
+}

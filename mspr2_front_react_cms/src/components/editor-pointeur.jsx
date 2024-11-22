@@ -171,12 +171,12 @@ function PointeurAdmin() {
                         {props => (
                             <Form>
                                 <div className="d-flex flex-column">
-                                    <div className="d-flex">
-                                        <div className="d-flex flex-column">
+                                    <div className="d-flex flex-column flex-md-row">
+                                        <div className="d-flex flex-column mx-1">
                                             <label htmlFor="id">Id (MAJ)</label>
                                             <Field type="number" id="id" name="id" placeholder="id du pointeur" />
                                         </div>
-                                        <div className="d-flex flex-column mx-3">
+                                        <div className="d-flex flex-column mx-1">
                                             <label>Type</label>
                                             <Field name="type" as="select" className="type">
 
@@ -191,12 +191,12 @@ function PointeurAdmin() {
 
                                     </div>
                                     </div>
-                                    <div className="d-flex">
-                                        <div className="d-flex flex-column">
+                                    <div className="d-flex flex-column flex-md-row">
+                                        <div className="d-flex flex-column mx-1">
                                             <label htmlFor="lon">longitude</label>
                                             <Field type="number" step="0.0001" id="lon" name="lon" placeholder="longitude" value={dataFromChild.lon} />
                                         </div>
-                                        <div className="d-flex flex-column mx-3">
+                                        <div className="d-flex flex-column mx-1">
                                             <label htmlFor="lat">latitude</label>
                                             <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" value={dataFromChild.lat} />
                                         </div>

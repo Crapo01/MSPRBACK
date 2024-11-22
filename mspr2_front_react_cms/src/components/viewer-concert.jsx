@@ -52,9 +52,12 @@ function ConcertViewer() {
                     <Row className={"m-3"}>
 
                         {datas.map((item) => (
-                            <Col key={item.id} className={"p-1 m-2 border d-flex  col-12 overflow-auto"} >
-                                <img src={item.image} alt="" style={{ height: 100 + 'px' }} />                               
+                            <Col key={item.id} className={"p-1 m-2 border d-flex flex-column flex-md-row col-12 overflow-auto"} >
                                 <div>
+                                    <img src={item.image} alt="" className="img100px" />      
+                                </div>
+                                                         
+                                <div >
                                 <div> {"nom: " + item.nom + " | origine: " + item.origine}  </div>
                                 <div> {"date: " + item.date + " | heure: " + item.heure + " | scene: " + item.scene}  </div>
                                 <div> {"description: " + item.description}  </div>

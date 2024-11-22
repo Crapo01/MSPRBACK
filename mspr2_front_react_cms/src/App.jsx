@@ -65,12 +65,14 @@ class App extends Component {
 
     return (
       <div>
-        <nav className="navbar navbar-expand navbar-dark bg-dark justify-content-between">
+              
+        <nav className="navbar navbar-expand navbar-dark bg-dark justify-content-between flex-column">
+          <div >
           <Link to={"/"} className="navbar-brand">
             NationSound CMS
           </Link>
-          
-            <div className="navbar-nav justify-content-around w-50">
+          </div>
+            <div className="navbar-nav justify-content-around">
               <li className="nav-item border">
                 <Link to={"/home"} className="nav-link">
                   Home
@@ -104,6 +106,7 @@ class App extends Component {
           
 
           {currentUser ? (
+            
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
@@ -116,6 +119,7 @@ class App extends Component {
                 </a>
               </li>
             </div>
+          
           ) : (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">

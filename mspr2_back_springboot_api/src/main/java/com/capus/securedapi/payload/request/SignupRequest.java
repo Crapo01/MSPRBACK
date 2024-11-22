@@ -2,6 +2,7 @@ package com.capus.securedapi.payload.request;
 
 import java.util.Set;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 public class SignupRequest {
@@ -17,7 +18,7 @@ public class SignupRequest {
   private Set<String> role;
 
   @NotBlank
-  @Size(min = 6, max = 40)
+  @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$", message = "8 to 20 characters,at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character:")
   private String password;
 
   public String getUsername() {
@@ -43,7 +44,7 @@ public class SignupRequest {
   public void setPassword(String password) {
     this.password = password;
   }
-
+  @Schema(description = "Set of roles to update", allowableValues = {"viewer","admin","editor","none" } ,example = "[\"viewer\",\"admin\",\"editor\",\"none\"]")
   public Set<String> getRole() {
     return this.role;
   }

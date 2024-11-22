@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,6 @@ public class  User {
   private String email;
 
   @NotBlank
-  @Size(max = 120)
   private String password;
 
   @ManyToMany(fetch = FetchType.LAZY)

@@ -41,10 +41,11 @@ const vusername = value => {
 };
 
 const vpassword = value => {
-  if (value.length < 6 || value.length > 40) {
+  let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  if (!pattern.test(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        The password must be minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
       </div>
     );
   }

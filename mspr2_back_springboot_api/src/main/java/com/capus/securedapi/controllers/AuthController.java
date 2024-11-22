@@ -10,6 +10,8 @@ import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.payload.request.CaptchaToken;
 import com.capus.securedapi.payload.response.CaptchaResponseType;
 import com.capus.securedapi.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ import com.capus.securedapi.repository.UserRepository;
 import com.capus.securedapi.security.jwt.JwtUtils;
 import com.capus.securedapi.security.services.UserDetailsImpl;
 import org.springframework.web.client.RestTemplate;
-
+@Tag(name = "Authentication and admin", description = "Authentication and accounts management APIs")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth/")
@@ -78,6 +80,10 @@ public class AuthController {
     this.userService = userService;
   }
 
+  @Operation(
+          summary = "Get user details in DB",
+          description = "All access allowed.Look for user in DB and return user's details if found",
+          tags = { "All access allowed" })
   @PostMapping("signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -99,6 +105,10 @@ public class AuthController {
             roles));
   }
 
+  @Operation(
+          summary = "Create a new user with encrypted password in DB",
+          description = "All access allowed.User registration will give \"none\" role by default and add user in DB ",
+          tags = { "All access allowed" })
   @PostMapping("signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -163,6 +173,10 @@ public class AuthController {
   }
 
   //GET ALL ACCOUNTS REST API
+  @Operation(
+          summary = "Get all accounts in DB",
+          description = "ONLY FOR ADMINS.",
+          tags = { "Admin only" })
   @GetMapping("all")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<List<UserDetailsDto>> getAll() {
@@ -170,6 +184,10 @@ public class AuthController {
     return ResponseEntity.ok(user);
   }
 
+  @Operation(
+          summary = "Delete account by ID",
+          description = "ONLY FOR ADMINS.",
+          tags = { "Admin only" })
   @DeleteMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> deleteUser(@PathVariable Long id) {
@@ -184,6 +202,10 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
   }
 
+  @Operation(
+          summary = "Update user role by ID",
+          description = "ONLY FOR ADMINS.",
+          tags = { "Admin only" })
   @PutMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody UserRoleUpdateDto userRoleUpdateDto) {
@@ -237,6 +259,10 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse("User " + updatedUser.getRoles().toString() + " updated successfully!"));
   }
 
+  @Operation(
+  summary = "Verify reCaptcha token",
+  description = "All access allowed.Send reCaptcha token to google server and returns success: true/false",
+  tags = { "All access allowed" })
   @PostMapping("/verify")
   public ResponseEntity<?> verifyRecaptcha(@RequestBody CaptchaToken token) {
     RestTemplate restTemplate = new RestTemplate();

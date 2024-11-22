@@ -80,7 +80,15 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //
 //    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //  }
-  
+
+  private static final String[] SWAGGER_WHITELIST ={
+          "/api/v1/auth/**",
+          "/v3/api-docs/**",
+          "/v3/api-docs.yaml",
+          "/swagger-ui/**",
+          "/swagger-ui.html"
+  };
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
@@ -94,6 +102,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                         .requestMatchers("/api/pointeurs/**").permitAll()
                         .requestMatchers("/ws-endpoint/**").permitAll()
                         .requestMatchers("/app/**").permitAll()
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         .anyRequest().authenticated()
         );
     

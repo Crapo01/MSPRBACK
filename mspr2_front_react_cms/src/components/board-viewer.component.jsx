@@ -5,13 +5,19 @@ import EventBus from "../common/EventBus";
 import ActuViewer from "./viewer-actu";
 import PointeurViewer from "./viewer-pointeur";
 import ConcertViewer from "./viewer-concert";
+import authService from "../services/auth.service";
+import RedirectToLogin from "./redirect-to-login";
+
 
 export default class BoardUser extends Component {
   constructor(props) {
     super(props);
 
+    
+
     this.state = {
-      content: ""
+      content: "",
+      redir: false,
     };
   }
 
@@ -34,6 +40,9 @@ export default class BoardUser extends Component {
 
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
+          this.setState({
+            redir: true
+          });
         }
       }
     );
@@ -44,7 +53,8 @@ export default class BoardUser extends Component {
       <div className="container">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
-        </header>        
+        </header>               
+        {this.state.redir&&<RedirectToLogin/>}        
         <ActuViewer/>
         <ConcertViewer/>
         <PointeurViewer/>

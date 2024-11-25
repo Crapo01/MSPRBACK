@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import userService from "../services/user.service";
-import eventBus from "../common/EventBus";
 import authService from "../services/auth.service";
 import Notifications from "./notification";
 
@@ -16,16 +15,12 @@ function ActuAdmin() {
     async function fetchData() {
         userService.getInfo().then(
             response => {
-                console.log(response)
+                // console.log(response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },
             error => {
-                console.log(error.message);
-
-                if (error.response && error.response.status === 401) {
-                    eventBus.dispatch("logout");
-                }
+                console.log(error.message);                
             }
         );
     }
@@ -54,16 +49,16 @@ function ActuAdmin() {
         async function deleteItem(id) {
             userService.deleteInfo(id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -127,17 +122,13 @@ function ActuAdmin() {
 
             userService.createInfo(dataString).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
                 error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
-                    }
+                    console.log(error.message);                    
                 }
             );
 
@@ -168,16 +159,16 @@ function ActuAdmin() {
 
             userService.updateInfo(dataString, id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -259,10 +250,10 @@ function ActuAdmin() {
 
     return (
         <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">NOTIFICATIONS</h1>
                 
                 {showPanel &&
                     <>
+                    <h1 className="lightningBg border rounded text-light text-center sticky z-1">NOTIFICATIONS</h1>
                     <Notifications/>
                     <h1 className="lightningBg border rounded text-light text-center sticky z-1">INFORMATIONS</h1>
             <div className="d-lg-flex">

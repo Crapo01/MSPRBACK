@@ -45,7 +45,7 @@ public class UserServiceIplm implements UserService {
     public void deleteUser(Long id) {
         User user = userRepository
                 .findById(id)
-                .orElseThrow(()->new RuntimeException("No User found"));
+                .orElseThrow(()->new RuntimeException("API ERROR:No User found"));
         userRepository.delete(user);
     }
 }

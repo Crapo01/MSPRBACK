@@ -16,6 +16,7 @@ public class Pointeur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String nom;
     private float lon;
     private float lat;

@@ -60,8 +60,8 @@ resource:
 		</dependency>
 
 ### resource:
-
 documentation:  
+https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/  
 https://springdoc.org/   
 https://www.bezkoder.com/swagger-3-annotations/    
 https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/#mcetoc_1heq9ft3o1r  
@@ -70,3 +70,5 @@ https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/#mce
 [springboot with swagger doc](https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/)
 
 Navigate to http://localhost:8080/swagger-ui.html
+
+

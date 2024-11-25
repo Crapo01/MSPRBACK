@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import userService from "../services/user.service";
-import eventBus from "../common/EventBus";
 import authService from "../services/auth.service";
 
 
@@ -15,16 +14,12 @@ function UserAdmin() {
     async function fetchData() {
         userService.getUsers().then(
             response => {
-                console.log(response)
+                // console.log(response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },
             error => {
-                console.log(error.message);
-
-                if (error.response && error.response.status === 401) {
-                    eventBus.dispatch("logout");
-                }
+                console.error(error.message);
             }
         );
     }
@@ -53,8 +48,8 @@ function UserAdmin() {
         async function handleUpdate(values, id) {
             await new Promise((r) => setTimeout(r, 500));
             const dataString = JSON.stringify(values, null, '  ');
-            console.log(values)
-            console.log(dataString)
+            // console.log(values)
+            // console.log(dataString)
             if (window.confirm('Confirmez vous la mise à jour?')) {
                 updateItem(dataString, id)
             }
@@ -63,17 +58,17 @@ function UserAdmin() {
         async function updateItem(dataString, id) {
             userService.updateUser(dataString, id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     alert("updated")
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -82,16 +77,16 @@ function UserAdmin() {
         async function deleteItem(id) {
             userService.deleteUser(id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -104,8 +99,8 @@ function UserAdmin() {
                     <Row className={"m-3 sticky50"}>
 
                         {datas.map((item) => (
-                            <Row className={"p-1  border d-flex "}>
-                                <Col key={item.id} className={"p-1  col-12 col-md-6 overflow-auto"} >
+                            <Row key={item.id} className={"p-1  border d-flex "}>
+                                <Col  className={"p-1  col-12 col-md-6 overflow-auto"} >
                                     <div className="d-flex">
                                         <div>
                                             <div> {"id:" + item.id + " |        username: " + item.username}  </div>
@@ -151,20 +146,15 @@ function UserAdmin() {
 
 
     return (
-        <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">UTILISATEURS</h1>
-
-            {console.log("showPanel" + showPanel)}
+        <> 
             {showPanel &&
                 <>
-
-
+                <h1 className="lightningBg border rounded text-light text-center sticky z-1">UTILISATEURS</h1>
                     <div >
                         <Event />
                     </div>
                 </>
             }
-
         </>
     );
 };

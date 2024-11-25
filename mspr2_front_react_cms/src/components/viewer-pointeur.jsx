@@ -4,26 +4,30 @@ import authService from "../services/auth.service";
 
 function PointeurViewer() {
 
-   
- const [showPanel, setShowPanel] = useState(false);
+
+    const [showPanel, setShowPanel] = useState(false);
     useEffect(() => {
         const user = authService.getCurrentUser();
         if (user) {
-            setShowPanel(user.roles.includes("ROLE_VIEWER"));            
-        }  
+            setShowPanel(user.roles.includes("ROLE_VIEWER"));
+        }
     }, []);
 
 
-    
 
-    
+
+
 
 
 
     return (
         <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">POINTEURS</h1>
-            {showPanel && <CarteMini/>}            
+            {showPanel &&
+                <>
+                    <h1 className="lightningBg border rounded text-light text-center sticky z-1">POINTEURS</h1>
+                    {showPanel && <CarteMini />}
+                </>
+            }
         </>
     );
 };

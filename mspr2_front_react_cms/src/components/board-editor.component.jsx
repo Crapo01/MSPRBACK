@@ -7,6 +7,7 @@ import ConcertAdmin from "./editor-concert";
 import PointeurAdmin from "./editor-pointeur";
 import { StompSessionProvider} from "react-stomp-hooks";
 import Notifications from "./notification";
+import RedirectToLogin from "./redirect-to-login";
 
 
 
@@ -16,7 +17,8 @@ export default class BoardEditor extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
+      redir: false,
     };
   }
 
@@ -39,6 +41,9 @@ export default class BoardEditor extends Component {
 
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
+          this.setState({
+            redir: true
+          });
         }
       }
     );
@@ -58,6 +63,7 @@ export default class BoardEditor extends Component {
         <ConcertAdmin/>
         <PointeurAdmin/>
         </StompSessionProvider>
+        {this.state.redir&&<RedirectToLogin/>} 
       </div>
     );
   }

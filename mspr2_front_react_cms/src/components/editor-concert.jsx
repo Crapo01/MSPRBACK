@@ -3,7 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import authService from "../services/auth.service";
 import userService from "../services/user.service";
-import eventBus from "../common/EventBus";
+
 
 function ConcertAdmin() {
 
@@ -13,27 +13,23 @@ function ConcertAdmin() {
     async function fetchData() {
         userService.getConcert().then(
             response => {
-                console.log(response)
+                // console.log(response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },
             error => {
                 console.log(error.message);
-
-                if (error.response && error.response.status === 401) {
-                    eventBus.dispatch("logout");
-                }
             }
         );
     }
 
-    useEffect(() => {        
+    useEffect(() => {
         const user = authService.getCurrentUser();
         if (user) {
-            if (user.roles.includes("ROLE_EDITOR")){
+            if (user.roles.includes("ROLE_EDITOR")) {
                 setShowPanel(true);
-                 fetchData(); 
-             } 
+                fetchData();
+            }
         }
     }, []);
 
@@ -51,16 +47,16 @@ function ConcertAdmin() {
         async function deleteItem(id) {
             userService.deleteConcert(id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-    
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -112,34 +108,30 @@ function ConcertAdmin() {
         async function createItem(dataString) {
             userService.createConcert(dataString).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
                 error => {
                     console.log(error.message);
-    
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
-                    }
                 }
             );
         }
 
         async function updateItem(dataString, id) {
-            userService.updateConcert(dataString,id).then(
+            userService.updateConcert(dataString, id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-    
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -244,22 +236,25 @@ function ConcertAdmin() {
 
     return (
         <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">CONCERTS</h1>
-                
-                {showPanel &&
-            <div className="d-lg-flex">
-                    <>
-                        <div >
-                            <Forms />
-                        </div>
 
-                        <div >
-                            <Event />
-                        </div>
-                    </>
-               
+            {showPanel &&
+                <>
+                    <h1 className="lightningBg border rounded text-light text-center sticky z-1">CONCERTS</h1>
+                    <div className="d-lg-flex">
+                        <>
+                            <div >
+                                <Forms />
+                            </div>
 
-            </div> }
+                            <div >
+                                <Event />
+                            </div>
+                        </>
+
+
+                    </div>
+                </>
+            }
         </>
     );
 };

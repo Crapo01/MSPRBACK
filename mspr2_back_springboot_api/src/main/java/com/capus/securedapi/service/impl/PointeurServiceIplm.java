@@ -51,7 +51,7 @@ public class PointeurServiceIplm implements PointeurService {
 
     @Override
     public void deletePointeur(Long id) {
-        Pointeur pointeur = pointeurRepositary.findById(id).orElseThrow(() -> new RuntimeException("No pointeur found"));
+        Pointeur pointeur = pointeurRepositary.findById(id).orElseThrow(() -> new RuntimeException("Le pointeur avec pour ID " +id+ " n'existe pas"));
         pointeurRepositary.deleteById(id);
     }
 }

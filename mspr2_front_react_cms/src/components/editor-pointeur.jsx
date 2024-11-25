@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import userService from "../services/user.service";
-import eventBus from "../common/EventBus";
 import authService from "../services/auth.service";
 import CarteMini from "./cartemini";
 
@@ -10,25 +9,21 @@ function PointeurAdmin() {
 
     const [datas, setDatas] = useState(false);
     const [showPanel, setShowPanel] = useState(false);
-    const [dataFromChild, setDataFromChild] = useState({lat: 0 ,lon: 0 });
+    const [dataFromChild, setDataFromChild] = useState({ lat: 48.83, lon: 2.44 });
 
-  function handleDataFromChild(data) {
-    setDataFromChild(data);
-  }
+    function handleDataFromChild(data) {
+        setDataFromChild(data);
+    }
 
     async function fetchData() {
         userService.getPointeur().then(
             response => {
-                console.log(response)
+                // console.log(response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },
             error => {
                 console.log(error.message);
-
-                if (error.response && error.response.status === 401) {
-                    eventBus.dispatch("logout");
-                }
             }
         );
     }
@@ -36,10 +31,10 @@ function PointeurAdmin() {
     useEffect(() => {
         const user = authService.getCurrentUser();
         if (user) {
-            if (user.roles.includes("ROLE_EDITOR")){
+            if (user.roles.includes("ROLE_EDITOR")) {
                 setShowPanel(true);
-                 fetchData(); 
-             } 
+                fetchData();
+            }
         }
     }, []);
 
@@ -57,16 +52,16 @@ function PointeurAdmin() {
         async function deleteItem(id) {
             userService.deletePointeur(id).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -101,7 +96,7 @@ function PointeurAdmin() {
             await new Promise((r) => setTimeout(r, 500));
             const dataString = JSON.stringify(values, null, '  ');
             if (window.confirm('Confirmez vous la nouvelle entrée?')) {
-                console.log(dataString)
+                // console.log(dataString)
                 createItem(dataString)
             }
         }
@@ -118,16 +113,16 @@ function PointeurAdmin() {
         async function createItem(dataString) {
             userService.createPointeur(dataString).then(
                 response => {
-                    console.log(response)
+                    // console.log(response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -136,16 +131,16 @@ function PointeurAdmin() {
         async function updateItem(dataString, id) {
             userService.updatePointeur(dataString, id).then(
                 response => {
-                    console.log(response)
+                    // console.log("response\d"+response)
                     const data = response.data;
                     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
                     window.location.reload()
                 },
-                error => {
-                    console.log(error.message);
-
-                    if (error.response && error.response.status === 401) {
-                        eventBus.dispatch("logout");
+                error => {                    
+                    if (error.response) {
+                        alert(error.message + "\n" + error.response.data.message);
+                    } else {
+                        alert(error.message)
                     }
                 }
             );
@@ -189,7 +184,7 @@ function PointeurAdmin() {
                                                 <option value="toilettes">toilettes</option>
                                             </Field>
 
-                                    </div>
+                                        </div>
                                     </div>
                                     <div className="d-flex flex-column flex-md-row">
                                         <div className="d-flex flex-column mx-1">
@@ -200,7 +195,7 @@ function PointeurAdmin() {
                                             <label htmlFor="lat">latitude</label>
                                             <Field type="number" step="0.0001" id="lat" name="lat" placeholder="latitude" value={dataFromChild.lat} />
                                         </div>
-                                        </div>
+                                    </div>
                                     <p>Cliquer sur la carte pour recuperer les coordonnées</p>
                                     <div className="d-flex flex-column">
                                         <label htmlFor="description">description du pointeur</label>
@@ -212,7 +207,7 @@ function PointeurAdmin() {
                                     </div>
                                     <div className="d-flex flex-column">
                                         <label htmlFor="nom">nom du pointeur</label>
-                                        <Field id="nom" name="nom" placeholder="nom du pointeur" className="my-2" />
+                                        <Field id="nom" name="nom" placeholder="nom du pointeur" className="my-2" required />
                                     </div>
 
                                 </div>
@@ -236,24 +231,27 @@ function PointeurAdmin() {
 
 
     return (
-        <>
-            <h1 className="lightningBg border rounded text-light text-center sticky z-1">POINTEURS</h1>
-            <div className="d-lg-flex">
-                {console.log("showPanel" + showPanel)}
-                {showPanel &&
+        <>{showPanel &&
+            <>
+                <h1 className="lightningBg border rounded text-light text-center sticky z-1000">POINTEURS</h1>
+                            <CarteMini sendDataToParent={handleDataFromChild} />
+                <div className="d-lg-flex z-1">
+
+
                     <>
                         <div >
                             <Forms />
                         </div>
 
                         <div >
-                            <CarteMini sendDataToParent={handleDataFromChild}/>
                             <Event />
                         </div>
                     </>
-                }
 
-            </div>
+
+                </div>
+            </>
+        }
         </>
     );
 };

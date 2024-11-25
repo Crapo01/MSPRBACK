@@ -5,12 +5,18 @@ import java.util.List;
 import java.util.Set;
 
 
+import com.capus.securedapi.dto.ConcertDto;
+import com.capus.securedapi.dto.InformationDto;
 import com.capus.securedapi.dto.UserDetailsDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.payload.request.CaptchaToken;
 import com.capus.securedapi.payload.response.CaptchaResponseType;
 import com.capus.securedapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +86,10 @@ public class AuthController {
     this.userService = userService;
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", content = { @Content(mediaType = "application/json",
+                  schema = @Schema(implementation = JwtResponse.class)) })
+  })
   @Operation(
           summary = "Get user details in DB",
           description = "All access allowed.Look for user in DB and return user's details if found",
@@ -104,6 +114,11 @@ public class AuthController {
             roles));
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "201", description = "User registered successfully!"),
+          @ApiResponse(responseCode = "400 a", description = "Error: Username is already taken!"),
+          @ApiResponse(responseCode = "400 b", description = "Error: Email is already in use!")
+  })
   @Operation(
           summary = "Create a new user with encrypted password in DB",
           description = "All access allowed.User registration will give \"none\" role by default and add user in DB ",
@@ -183,6 +198,10 @@ public class AuthController {
     return ResponseEntity.ok(user);
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "User deleted successfully!"),
+          @ApiResponse(responseCode = "400", description = "Error: No User found!")
+  })
   @Operation(
           summary = "Delete account by ID",
           description = "ONLY FOR ADMINS.",
@@ -201,6 +220,10 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "User + updatedUser.getRoles().toString() +  updated successfully!"),
+          @ApiResponse(responseCode = "400", description = "Error: No User found!")
+  })
   @Operation(
           summary = "Update user role by ID",
           description = "ONLY FOR ADMINS.",
@@ -263,7 +286,7 @@ public class AuthController {
   description = "All access allowed.Send reCaptcha token to google server and returns success: true/false",
   tags = { "All access allowed" })
   @PostMapping("/verify")
-  public ResponseEntity<?> verifyRecaptcha(@RequestBody CaptchaToken token) {
+  public ResponseEntity<CaptchaResponseType> verifyRecaptcha(@RequestBody CaptchaToken token) {
     RestTemplate restTemplate = new RestTemplate();
     logger.info(token.getToken());
     MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();

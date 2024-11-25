@@ -3,13 +3,15 @@ import React, { Component } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import UserAdmin from "./admin-users";
+import RedirectToLogin from "./redirect-to-login";
 
 export default class BoardAdmin extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
+      redir: false,
     };
   }
 
@@ -32,6 +34,9 @@ export default class BoardAdmin extends Component {
 
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
+          this.setState({
+            redir: true
+          });
         }
       }
     );
@@ -43,6 +48,7 @@ export default class BoardAdmin extends Component {
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
           <UserAdmin/>
+          {this.state.redir&&<RedirectToLogin/>} 
         </header>
       </div>
     );

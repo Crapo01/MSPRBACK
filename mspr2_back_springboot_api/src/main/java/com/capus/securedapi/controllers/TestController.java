@@ -1,6 +1,8 @@
 package com.capus.securedapi.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
+
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "All access allowed")
+  })
   @Operation(
           summary = "Return access status",
           description = "All access allowed.The response is a string describing user's access rights.",
@@ -22,6 +28,10 @@ public class TestController {
     return "Public Content.";
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "Viewer Content."),
+          @ApiResponse(responseCode = "401")
+  })
   @Operation(
           summary = "Return access status",
           description = "ONLY FOR VIEWERS.The response is a string describing user's access rights.",
@@ -32,6 +42,10 @@ public class TestController {
     return "Viewer Content.";
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "Editor Content."),
+          @ApiResponse(responseCode = "401")
+  })
   @Operation(
           summary = "Return access status",
           description = "ONLY FOR EDITORS.The response is a string describing user's access rights.",
@@ -42,6 +56,10 @@ public class TestController {
     return "Editor Content.";
   }
 
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "Admin Content."),
+          @ApiResponse(responseCode = "401")
+  })
   @Operation(
           summary = "Return access status",
           description = "ONLY FOR ADMINS.The response is a string describing user's access rights.",

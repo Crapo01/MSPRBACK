@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class PointeurServiceIplm implements PointeurService {
 
-    private PointeurRepositary pointeurRepositary;
+    private final PointeurRepositary pointeurRepositary;
 
     public PointeurServiceIplm(PointeurRepositary pointeurRepositary) {
         this.pointeurRepositary = pointeurRepositary;

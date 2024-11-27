@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceIplm implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     public UserServiceIplm(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

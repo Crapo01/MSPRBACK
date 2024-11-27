@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class ConcertServiceIplm implements ConcertService{
 	
-	private ConcertRepository concertRepository;
+	private final ConcertRepository concertRepository;
 
 	
 	public ConcertServiceIplm(ConcertRepository concertRepository) {

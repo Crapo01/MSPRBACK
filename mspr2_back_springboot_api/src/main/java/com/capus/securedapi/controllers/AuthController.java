@@ -230,7 +230,7 @@ public class AuthController {
           tags = { "Admin only" })
   @PutMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody UserRoleUpdateDto userRoleUpdateDto) {
+  public ResponseEntity<?> updateUserRole(@PathVariable Long id,@Valid @RequestBody UserRoleUpdateDto userRoleUpdateDto) {
     logger.info("update end point reached");
     logger.info(id.toString());
     if (!userRepository.existsById(id)) {
@@ -286,7 +286,7 @@ public class AuthController {
   description = "All access allowed.Send reCaptcha token to google server and returns success: true/false",
   tags = { "All access allowed" })
   @PostMapping("/verify")
-  public ResponseEntity<CaptchaResponseType> verifyRecaptcha(@RequestBody CaptchaToken token) {
+  public ResponseEntity<CaptchaResponseType> verifyRecaptcha(@Valid @RequestBody CaptchaToken token) {
     RestTemplate restTemplate = new RestTemplate();
     logger.info(token.getToken());
     MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();

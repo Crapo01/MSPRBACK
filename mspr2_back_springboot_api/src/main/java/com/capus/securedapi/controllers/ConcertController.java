@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,8 +27,9 @@ import com.capus.securedapi.service.ConcertService;
 @RestController
 @RequestMapping("/api/concerts/")
 public class ConcertController {
-	
+	@Autowired
 	private final ConcertService concertService;
+	@Autowired
 	private final ConcertRepository concertRepository;
 
 	public ConcertController(ConcertService concertService, ConcertRepository concertRepository) {

@@ -1,7 +1,6 @@
 package com.capus.securedapi.service;
 
 import com.capus.securedapi.dto.InformationDto;
-import com.capus.securedapi.entity.Information;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class InformationServiceTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+class InformationServiceIntegrationTest {
 
     @Autowired
     private InformationService informationService;
@@ -29,7 +29,7 @@ class InformationServiceTest {
 
         //VERIFY
         assertNotNull(savedInformation);
-
-
+        assertEquals("Hello World", savedInformation.getMessage());
+        assertNotNull(savedInformation.getId());
     }
 }

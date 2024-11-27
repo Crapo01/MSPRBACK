@@ -25,7 +25,9 @@ import java.util.List;
 @RequestMapping("/api/informations/")
 public class InformationController {
 
+    @Autowired
     private final InformationService informationService;
+    @Autowired
     private final InformationRepository informationRepository;
 
     public InformationController(InformationService informationService, InformationRepository informationRepository) {

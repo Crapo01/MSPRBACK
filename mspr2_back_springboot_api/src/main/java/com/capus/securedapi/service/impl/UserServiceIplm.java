@@ -8,6 +8,7 @@ import com.capus.securedapi.mapper.InformationMapper;
 import com.capus.securedapi.mapper.UserMapper;
 import com.capus.securedapi.repository.UserRepository;
 import com.capus.securedapi.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceIplm implements UserService {
 
-    private final UserRepository userRepository;
-    public UserServiceIplm(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Override

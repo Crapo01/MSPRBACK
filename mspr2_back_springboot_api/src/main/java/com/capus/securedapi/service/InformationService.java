@@ -1,8 +1,10 @@
 package com.capus.securedapi.service;
 
 import com.capus.securedapi.dto.InformationDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 public interface InformationService {
 

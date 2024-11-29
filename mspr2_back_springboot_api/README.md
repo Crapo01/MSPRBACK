@@ -71,4 +71,23 @@ https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/#mce
 
 Navigate to http://localhost:8080/swagger-ui.html
 
+## TDD and Junit tests
+
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+
+
+https://www.jetbrains.com/help/idea/tests-in-ide.html
+
+
+documentation:  
+https://www.linkedin.com/learning/spring-test-driven-development-with-junit/write-integration-tests-for-service?resume=false&u=56745737   
+
+
+
 

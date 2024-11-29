@@ -2,6 +2,8 @@ package com.capus.securedapi.controllers;
 
 import com.capus.securedapi.dto.InformationDto;
 import com.capus.securedapi.dto.PointeurDto;
+import com.capus.securedapi.entity.Information;
+import com.capus.securedapi.exceptions.ApiException;
 import com.capus.securedapi.payload.response.MessageResponse;
 import com.capus.securedapi.repository.InformationRepository;
 import com.capus.securedapi.service.InformationService;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.capus.securedapi.payload.response.CustomHttpResponse.response;
 
 @Tag(name = "Infos", description = "Infos APIs")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -45,20 +50,21 @@ public class InformationController {
             tags = { "Editor only" })
     @PostMapping
     @PreAuthorize("hasRole('EDITOR')")
-    public ResponseEntity<InformationDto> addInformation(@RequestBody InformationDto informationDto) {
-        return new ResponseEntity<>(informationService.createInformation(informationDto), HttpStatus.CREATED);
+    public ResponseEntity<Object> createInfo(@Valid @RequestBody Information information) {
+        Information createdInformation =informationService.createInformation(information);
+        return response(HttpStatus.CREATED,"Information created",createdInformation);
     }
 
-    //GET ALL ACCOUNTS REST API
+
     @Operation(
             summary = "Get all infos in DB",
             description = "All access allowed.",
             tags = { "All access allowed" })
     @GetMapping("all")
     // ALL authorized
-    public ResponseEntity<List<InformationDto>> getAllInformation() {
-        List<InformationDto> informationDtos = informationService.getAllInformation();
-        return ResponseEntity.ok(informationDtos);
+    public ResponseEntity<Object> getAllInformation() {
+        List<Information> informations = informationService.getAllInformation();
+        return response(HttpStatus.OK,"All Informations returned",informations);
     }
 
     @ApiResponses({
@@ -72,14 +78,10 @@ public class InformationController {
             tags = { "Editor only" })
     @PutMapping("update/{id}")
     @PreAuthorize("hasRole('EDITOR')")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody InformationDto request) {
-        if (!informationRepository.existsById(id)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("No Information found with id: "+id));
-        }
-        InformationDto updatedInformationDto = informationService.update(id, request.getMessage(), request.isImportant());
-        return ResponseEntity.ok(updatedInformationDto);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Information request) throws ApiException {
+
+        Information updatedInformation = informationService.update(id,request);
+        return response(HttpStatus.CREATED,"Information updated",updatedInformation);
     }
 
     @ApiResponses({
@@ -92,13 +94,7 @@ public class InformationController {
             tags = { "Editor only" })
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('EDITOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteInformation(@PathVariable Long id) {
-        if (!informationRepository.existsById(id)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("No Information found with id: "+id));
-        }
-        informationService.deleteInformation(id);
-        return ResponseEntity.ok("Deleted Information " + id);
+    public ResponseEntity<Object> deleteInfo(@PathVariable Long id) throws ApiException {
+        return response(HttpStatus.OK,"Information deleted",informationService.deleteInformation(id));
     }
 }

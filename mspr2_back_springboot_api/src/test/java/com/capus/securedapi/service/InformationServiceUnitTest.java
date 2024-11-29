@@ -5,6 +5,7 @@ import com.capus.securedapi.entity.Information;
 import com.capus.securedapi.repository.InformationRepository;
 import com.capus.securedapi.service.impl.InformationServiceIplm;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+
 class InformationServiceUnitTest {
 
     @Mock
@@ -29,9 +30,9 @@ class InformationServiceUnitTest {
     private InformationServiceIplm informationService;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

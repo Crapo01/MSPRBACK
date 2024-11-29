@@ -5,6 +5,7 @@ import com.capus.securedapi.entity.Pointeur;
 import com.capus.securedapi.mapper.PointeurMapper;
 import com.capus.securedapi.repository.PointeurRepositary;
 import com.capus.securedapi.service.PointeurService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PointeurServiceIplm implements PointeurService {
-
-    private PointeurRepositary pointeurRepositary;
+    @Autowired
+    private final PointeurRepositary pointeurRepositary;
 
     public PointeurServiceIplm(PointeurRepositary pointeurRepositary) {
         this.pointeurRepositary = pointeurRepositary;

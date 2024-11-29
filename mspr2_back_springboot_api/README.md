@@ -20,7 +20,7 @@ https://stackoverflow.com/questions/71518442/cannot-load-driver-class-jdbcmysql-
 spring.application.name=secured_api
 
 spring.jpa.hibernate.ddl-auto=update  
-spring.datasource.url=jdbc:mysql://localhost:3306/securityjwt  
+spring.datasource.url=jdbc:mysql://localhost:3306/"db name" 
 spring.datasource.username= "db username here" 
 spring.datasource.password= "db password here"  
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver

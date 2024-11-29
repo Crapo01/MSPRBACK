@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class InformationServiceIplm implements InformationService {
 
-    private InformationRepository informationRepository;
+    private final InformationRepository informationRepository;
 
     public InformationServiceIplm(InformationRepository informationRepository) {
         this.informationRepository = informationRepository;

@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.capus.securedapi.entity.Concert;
 import com.capus.securedapi.exceptions.ApiException;
-import com.capus.securedapi.repository.ConcertRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,12 +30,11 @@ import static com.capus.securedapi.payload.response.CustomHttpResponse.response;
 public class ConcertController {
 	@Autowired
 	private final ConcertService concertService;
-	@Autowired
-	private final ConcertRepository concertRepository;
 
-	public ConcertController(ConcertService concertService, ConcertRepository concertRepository) {
+
+	public ConcertController(ConcertService concertService) {
 		this.concertService = concertService;
-		this.concertRepository = concertRepository;
+
 	}
 
 	@ApiResponses({

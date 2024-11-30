@@ -1,10 +1,13 @@
 package com.capus.securedapi.service.impl;
 
-import com.capus.securedapi.dto.PointeurDto;
+
+import com.capus.securedapi.entity.Concert;
 import com.capus.securedapi.entity.Pointeur;
-import com.capus.securedapi.mapper.PointeurMapper;
-import com.capus.securedapi.repository.PointeurRepositary;
+import com.capus.securedapi.exceptions.ApiException;
+import com.capus.securedapi.repository.PointeurRepository;
 import com.capus.securedapi.service.PointeurService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,45 +16,40 @@ import java.util.stream.Collectors;
 @Service
 public class PointeurServiceIplm implements PointeurService {
 
-    private final PointeurRepositary pointeurRepositary;
-
-    public PointeurServiceIplm(PointeurRepositary pointeurRepositary) {
-        this.pointeurRepositary = pointeurRepositary;
-    }
+    @Autowired
+    private PointeurRepository pointeurRepository;
 
 
     @Override
-    public PointeurDto createPointeur(PointeurDto pointeurDto) {
-        Pointeur pointeur = PointeurMapper.maptoPointeur(pointeurDto);
-        Pointeur savedPointeur = pointeurRepositary.save(pointeur);
-        return PointeurMapper.maptoPointeurDto(savedPointeur);
+    public Pointeur createPointeur(Pointeur pointeur) {
+        return pointeurRepository.save(pointeur);
     }
 
     @Override
-    public List<PointeurDto> getAllPointeurs() {
-        List<Pointeur> pointeurs = pointeurRepositary.findAll();
-        return pointeurs.stream().map(PointeurMapper::maptoPointeurDto).collect(Collectors.toList());
+    public Pointeur deletePointeur(Long id) throws ApiException {
+        Pointeur pointeurDeleted = pointeurRepository.findById(id).orElseThrow(() -> new ApiException("Id:" + id + " Not found in database", HttpStatus.NOT_FOUND));
+        pointeurRepository.deleteById(id);
+        return pointeurDeleted;
     }
 
     @Override
-    public PointeurDto update(Long id, String nom, float lat, float lon, String type, String description, String lien) {
-        Pointeur pointeur = pointeurRepositary
+    public List<Pointeur> getAllPointeurs() {
+        return pointeurRepository.findAll();
+    }
+
+    @Override
+    public Pointeur update(Long id, Pointeur request) throws ApiException {
+        Pointeur pointeur = pointeurRepository
                 .findById(id)
-                .orElseThrow(()->new RuntimeException(id+" No info found"));
+                .orElseThrow(() -> new ApiException("Id:" + id + " Not found in database", HttpStatus.NOT_FOUND));
         pointeur.setId(id);
-        pointeur.setNom(nom);
-        pointeur.setLat(lat);
-        pointeur.setLon(lon);
-        pointeur.setType(type);
-        pointeur.setDescription(description);
-        pointeur.setLien(lien);
-        Pointeur savedPointeur = pointeurRepositary.save(pointeur);
-        return PointeurMapper.maptoPointeurDto(savedPointeur);
-    }
+        pointeur.setNom(request.getNom());
+        pointeur.setLat(request.getLat());
+        pointeur.setLon(request.getLon());
+        pointeur.setType(request.getType());
+        pointeur.setDescription(request.getDescription());
+        pointeur.setLien(request.getLien());
+        return pointeurRepository.save(pointeur);
 
-    @Override
-    public void deletePointeur(Long id) {
-        Pointeur pointeur = pointeurRepositary.findById(id).orElseThrow(() -> new RuntimeException("Le pointeur avec pour ID " +id+ " n'existe pas"));
-        pointeurRepositary.deleteById(id);
     }
 }

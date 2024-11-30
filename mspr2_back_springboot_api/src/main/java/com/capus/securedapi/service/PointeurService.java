@@ -1,12 +1,15 @@
 package com.capus.securedapi.service;
 
-import com.capus.securedapi.dto.PointeurDto;
+import com.capus.securedapi.entity.Pointeur;
+import com.capus.securedapi.exceptions.ApiException;
 
 import java.util.List;
 
 public interface PointeurService {
-    PointeurDto createPointeur(PointeurDto pointeurDto);
-    List<PointeurDto> getAllPointeurs();
-    PointeurDto update(Long id, String nom,float lat,float lon,String type,String description,String lien);
-    void deletePointeur(Long id);
+    Pointeur createPointeur(Pointeur pointeur);
+    Pointeur deletePointeur(Long id) throws ApiException;
+
+    List<Pointeur> getAllPointeurs();
+
+    Pointeur update(Long id,Pointeur request) throws ApiException;
 }

@@ -1,6 +1,6 @@
 package com.capus.securedapi.service;
 
-import com.capus.securedapi.dto.InformationDto;
+import com.capus.securedapi.entity.Information;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,11 @@ class InformationServiceIntegrationTest {
     void createInformation() {
 
         //CREATE
-        InformationDto information = new InformationDto();
+        Information information = new Information();
         information.setMessage("Hello World");
 
         //TEST
-        InformationDto savedInformation = informationService.createInformation(information);
+        Information savedInformation = informationService.createInformation(information);
 
         //VERIFY
         assertNotNull(savedInformation);

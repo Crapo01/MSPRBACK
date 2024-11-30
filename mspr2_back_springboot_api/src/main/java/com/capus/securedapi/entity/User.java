@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
+
 @Setter
 @Getter
 @Entity

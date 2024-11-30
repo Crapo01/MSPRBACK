@@ -1,6 +1,5 @@
 package com.capus.securedapi.service;
 
-import com.capus.securedapi.dto.InformationDto;
 import com.capus.securedapi.entity.Information;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

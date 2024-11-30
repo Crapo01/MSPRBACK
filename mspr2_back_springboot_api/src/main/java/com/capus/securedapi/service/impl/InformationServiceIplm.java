@@ -1,20 +1,19 @@
 package com.capus.securedapi.service.impl;
 
-import com.capus.securedapi.dto.InformationDto;
 import com.capus.securedapi.entity.Information;
 import com.capus.securedapi.exceptions.ApiException;
-import com.capus.securedapi.mapper.InformationMapper;
 import com.capus.securedapi.repository.InformationRepository;
 import com.capus.securedapi.service.InformationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class InformationServiceIplm implements InformationService {
 
+    @Autowired
     private InformationRepository infosRepository;
 
     @Override

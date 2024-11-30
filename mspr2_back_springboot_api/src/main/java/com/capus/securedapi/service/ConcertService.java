@@ -1,17 +1,16 @@
 package com.capus.securedapi.service;
 
-import com.capus.securedapi.dto.ConcertDto;
+
+import com.capus.securedapi.entity.Concert;
+import com.capus.securedapi.exceptions.ApiException;
 
 import java.util.List;
 
 public interface ConcertService {
-	ConcertDto createConcert(ConcertDto concertDto);
+	Concert createConcert(Concert concert);
+	Concert deleteConcert(Long id) throws ApiException;
 
-	ConcertDto getConcertById(Long id);
+	List<Concert> getAllConcerts();
 
-	ConcertDto update(Long id, String Nom, String Image,String Description,String Origine,String Date,String Heure,String Scene,String lien);
-
-	List<ConcertDto> getAllConcerts();
-
-	void deleteConcert(Long id);
+	Concert update(Long id,Concert request) throws ApiException;
 }

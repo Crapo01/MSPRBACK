@@ -1,10 +1,8 @@
 package com.capus.securedapi.service.impl;
 
 import com.capus.securedapi.dto.UserDetailsDto;
-import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.entity.Role;
 import com.capus.securedapi.entity.User;
-import com.capus.securedapi.mapper.InformationMapper;
 import com.capus.securedapi.mapper.UserMapper;
 import com.capus.securedapi.repository.UserRepository;
 import com.capus.securedapi.service.UserService;

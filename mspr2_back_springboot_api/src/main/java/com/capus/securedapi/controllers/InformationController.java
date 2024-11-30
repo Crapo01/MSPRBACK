@@ -1,10 +1,7 @@
 package com.capus.securedapi.controllers;
 
-import com.capus.securedapi.dto.InformationDto;
-import com.capus.securedapi.dto.PointeurDto;
 import com.capus.securedapi.entity.Information;
 import com.capus.securedapi.exceptions.ApiException;
-import com.capus.securedapi.payload.response.MessageResponse;
 import com.capus.securedapi.repository.InformationRepository;
 import com.capus.securedapi.service.InformationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +39,7 @@ public class InformationController {
 
     @ApiResponses({
             @ApiResponse(responseCode = "201", content = { @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = InformationDto.class)) })
+                    schema = @Schema(implementation = Information.class)) })
     })
     @Operation(
             summary = "Create a new info",
@@ -69,7 +66,7 @@ public class InformationController {
 
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = InformationDto.class)) }),
+                    schema = @Schema(implementation = Information.class)) }),
             @ApiResponse(responseCode = "400", description = "No Information found with id: +id")
     })
     @Operation(

@@ -42,6 +42,7 @@ function CarteMini({ sendDataToParent }) {
                             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                         />
                         <Getlatlon/>
+                        {console.log(datas)}
                         if ({datas.lenght > 0}) {
                             <ul>
                                 {datas.map((item) => (

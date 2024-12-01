@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 
 function ActuViewer() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {
@@ -22,7 +22,7 @@ function ActuViewer() {
         // }
         userService.getInfo().then(
             response => {
-                // console.log(response)
+                 console.log(response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },

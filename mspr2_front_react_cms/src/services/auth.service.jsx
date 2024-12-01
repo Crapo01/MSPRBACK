@@ -1,9 +1,7 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
+import {BASE_URL} from '../config/config.js';
 
-
-
-const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = `${BASE_URL}/api/auth/`;
 
 class AuthService {
   login(username, password) {

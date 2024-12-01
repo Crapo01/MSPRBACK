@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 
 function ConcertViewer() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {

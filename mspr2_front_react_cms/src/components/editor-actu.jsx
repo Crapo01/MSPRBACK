@@ -8,14 +8,14 @@ import Notifications from "./notification";
 
 function ActuAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
 
     async function fetchData() {
         userService.getInfo().then(
             response => {
-                // console.log(response)
+                 console.log("editor",response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },

@@ -73,6 +73,10 @@ resource:
 
 ## SWAGGER
 
+Navigate to http://localhost:8080/swagger-ui.html
+
+
+
     <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -90,7 +94,7 @@ https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/#mce
 
 [springboot with swagger doc](https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/)
 
-Navigate to http://localhost:8080/swagger-ui.html
+
 
 ## TDD and Junit tests
 

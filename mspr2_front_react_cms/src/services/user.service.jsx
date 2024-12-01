@@ -1,11 +1,12 @@
 import axios from 'axios';
 import authHeader from './auth-header';
+import {BASE_URL} from '../config/config.js';
 
-const API_TEST_URL = 'http://localhost:8080/api/test/';
-const API_INFO_URL = 'http://localhost:8080/api/informations/';
-const API_CONCERT_URL = 'http://localhost:8080/api/concerts/';
-const API_POINTEUR_URL = 'http://localhost:8080/api/pointeurs/';
-const API_AUTH_URL = 'http://localhost:8080/api/auth/';
+const API_TEST_URL =    `${BASE_URL}/api/access/`;
+const API_INFO_URL =    `${BASE_URL}/api/informations/`;
+const API_CONCERT_URL = `${BASE_URL}/api/concerts/`;
+const API_POINTEUR_URL = `${BASE_URL}/api/pointeurs/`;
+const API_AUTH_URL = `${BASE_URL}/api/auth/`;
 
 class UserService {
   getPublicContent() {
@@ -73,7 +74,9 @@ class UserService {
 /////////////////////////////////////////////////////////////////////////// info section
 
   getInfo() {
-    return axios.get(API_INFO_URL + 'all', { headers: authHeader() });
+    const url=API_INFO_URL + 'all';
+    console.log(url)
+    return axios.get(url, { headers: authHeader() });
   }
   
   createInfo(data){

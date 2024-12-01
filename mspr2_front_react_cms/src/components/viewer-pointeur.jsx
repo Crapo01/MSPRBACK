@@ -5,7 +5,7 @@ import authService from "../services/auth.service";
 function PointeurViewer() {
 
 
-    const [showPanel, setShowPanel] = useState(false);
+    const [showPanel, setShowPanel] = useState([]);
     useEffect(() => {
         const user = authService.getCurrentUser();
         if (user) {

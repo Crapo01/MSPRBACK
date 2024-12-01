@@ -7,7 +7,7 @@ import CarteMini from "./cartemini";
 
 function PointeurAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
     const [dataFromChild, setDataFromChild] = useState({ lat: 48.83, lon: 2.44 });
 

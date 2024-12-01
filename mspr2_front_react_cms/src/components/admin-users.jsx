@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 
 function UserAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
 

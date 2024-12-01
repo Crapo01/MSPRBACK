@@ -7,7 +7,7 @@ import userService from "../services/user.service";
 
 function ConcertAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {

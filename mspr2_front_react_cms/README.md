@@ -1,24 +1,27 @@
 # CMS for MSPR
 
-## SET UP 
+# DEPLOIEMENT D'UNE NOUVELLE INSTANCE REACT VITE:
 
-### DEPENDENCIES
+Cloner le repo.
 
-    npm install react-router-dom
-    npm install react-bootstrap bootstrap
-    npm install axios
-    npm install react-validation validator
-    npm install formik --save
+Aller à la racine du site cd MSPRFRONT
+
+  npm install 
+
+pour installer toutes les dependences
+
 
 ### lancement de l'app+serveur applicatif
 
   Aller à la racine du site et lancer dans la console:  
-  npm run dev 
+  
+    npm run dev 
 
 ### BUILD de l'app pour deploiement WEB
 
   Aller à la racine du site et lancer dans la console:
-  npm run build
+  
+    npm run build
 
   le build est dans le dossier dist
 
@@ -27,6 +30,14 @@
   transferer l'ensemble du dossier dist via  filezilla dans le dossier HTDOCS du serveur web
 
 # MSPR2 development steps
+
+## DEPENDENCIES
+
+    npm install react-router-dom
+    npm install react-bootstrap bootstrap
+    npm install axios
+    npm install react-validation validator
+    npm install formik --save
 
   ## Connect to API
   
@@ -78,6 +89,6 @@ resource:
 
 https://www.npmjs.com/package/react-stomp-hooks
 
-added send message TODO form
+added send message 
 
 added delete message

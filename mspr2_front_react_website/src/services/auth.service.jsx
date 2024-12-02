@@ -1,6 +1,7 @@
 import axios from "axios";
+import {BASE_URL} from '../config/config.js';
 
-const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = `${BASE_URL}/api/auth/`;
 
 class AuthService {
   async login(username, password) {
@@ -32,8 +33,7 @@ class AuthService {
   }
 
   verifyCaptcha(token) {
-    console.log("send verif request")
-    console.log(token)
+    //console.log("send verif request",token)    
     return axios.post(API_URL + "verify", {
       token
     });

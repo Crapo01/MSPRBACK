@@ -3,23 +3,11 @@ import { Col, Row } from "react-bootstrap";
 import userService from "../services/user.service";
 import authService from "../services/auth.service";
 
-
-
 function ActuViewer() {
-
     const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
-    async function fetchData() {
-        // try {
-
-        //     const response = await fetch("http://localhost:8080/api/informations/all");
-        //     const data = await response.json();
-        //     if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
-
-        // } catch (error) {
-        //     throw ("Une erreur est survenue dans l'appel API actu: ")
-        // }
+    async function fetchData() {        
         userService.getInfo().then(
             response => {
                  console.log(response)
@@ -46,14 +34,10 @@ function ActuViewer() {
 
 
     function Event() {
-
-
         if (datas) {
             return (
                 <>
-
                     <Row className={"m-3"}>
-
                         {datas.map((item) => (
                             <Col key={item.id} className={"p-1 m-2 col-12 overflow-auto"} >
                                 {item.important && <div className="border border-danger border-3"> {"message: " + item.message}  </div>}

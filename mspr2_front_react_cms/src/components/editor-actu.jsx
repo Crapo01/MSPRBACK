@@ -15,7 +15,7 @@ function ActuAdmin() {
     async function fetchData() {
         userService.getInfo().then(
             response => {
-                 console.log("editor",response)
+                // console.log("editor",response)
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },
@@ -61,20 +61,7 @@ function ActuAdmin() {
                         alert(error.message)
                     }
                 }
-            );
-            // const url = 'http://localhost:8080/api/informations\/' + id
-            // try {
-            //     const response = await fetch(url, {
-            //         method: 'DELETE'
-            //     })
-            // }
-
-            // catch (error) {
-            //     alert("Une erreur c\'est produite");
-            // }
-            // finally {
-            //     window.location.reload();
-            // }
+            );            
         }
 
         if (datas) {
@@ -82,12 +69,10 @@ function ActuAdmin() {
                 <>
 
                     <Row className={"m-3 sticky50"}>
-
                         {datas.map((item) => (
                             <Col key={item.id} className={"p-1 mx-3 border col-12 overflow-auto"} >
                                 <div> {"id:" + item.id + " |        important: " + item.important}  </div>
                                 <div> {"message: " + item.message}  </div>
-
                                 <Button className='btn-danger border btn-sm' onClick={() => handleDelete(item.id)} >Effacer</Button>
                             </Col>
                         ))}
@@ -130,29 +115,7 @@ function ActuAdmin() {
                 error => {
                     console.log(error.message);                    
                 }
-            );
-
-            // const URL = 'http://localhost:8080/api/informations'
-            // const HEADER = authHeader();
-            // console.log(HEADER)
-            // try {
-            //     const newProduct = dataString
-            //     //console.log('String sent thru post: ' + newProduct)
-            //     const response = await fetch(URL, {
-            //         method: 'POST',
-            //         headers:HEADER,
-            //         body: newProduct,
-            //     })
-            //     //console.log(response)
-            //     //console.log('status:', response.status)
-            // }
-            // catch (error) {
-            //     //console.log(error);
-            // }
-            // finally {
-            //     alert("done")
-            //     window.location.reload();
-            // }
+            );           
         }
 
         async function updateItem(dataString, id) {
@@ -171,37 +134,13 @@ function ActuAdmin() {
                         alert(error.message)
                     }
                 }
-            );
-
-            // const url = 'http://localhost:8080/api/informations/update/' + id
-
-            // try {
-            //     const newProduct = dataString
-            //     //console.log('String sent thru post: ' + newProduct)
-            //     const response = await fetch(url, {
-            //         method: 'PUT',
-            //         headers: {
-            //             'Content-Type': 'application/json; charset=utf-8'
-            //         },
-            //         body: newProduct,
-            //     })
-            //     //console.log(response)
-            //     //console.log('status:', response.status)
-            // }
-            // catch (error) {
-            //     //console.log(error);
-            // }
-            // finally {
-            //     window.location.reload();
-            // }
+            );            
         }
 
         return (
             <>
-
                 <div className={"p-3 border rounded bg-light shadow sticky50"}>
                     <section >
-
                         <div className="m-3 p-1 border rounded bg-secondary ">
                             <h2>Ajouter Modifier un message</h2>
                         </div>

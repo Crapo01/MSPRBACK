@@ -24,7 +24,6 @@ return (
 
             <Form>
                 <div className="d-flex flex-column mx-5">
-
                     <div className="d-flex flex-column">
                         <label htmlFor=" message">Message notification push</label>
                         <Field id="message" name="message" placeholder="Message d'information ici..." className="my-3" />
@@ -38,13 +37,9 @@ return (
                     <Button className='btn-warning border btn-sm' onClick={() => handleClick(props.values)}>Publier</Button>
                 </div>
             </Form>
-
         )
         }
     </Formik>
 )
-}     
-      
-
-
+}
 export default Notifications;

@@ -1,6 +1,8 @@
 import { MapContainer, Marker, TileLayer, Tooltip, useMap} from "react-leaflet";
-import { Image, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import {BASE_URL} from '../config/config.js';
+
 
 
 function CarteMini({ sendDataToParent }) {
@@ -9,13 +11,12 @@ function CarteMini({ sendDataToParent }) {
     const [datas, setDatas] = useState([]);
     async function fetchWordPressData() {
         try {
-            const response = await fetch("http://localhost:8080/api/pointeurs/all");
+            const response = await fetch(`${BASE_URL}/api/pointeurs/all`);
             const data = await response.json();
             if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
 
         } catch (error) {
-            console.log("Une erreur est survenue dans l'appel API: ")
-            console.log(error)
+            console.log("Une erreur est survenue dans l'appel API: ",error)            
         }
     }
     useEffect(() => {
@@ -41,8 +42,7 @@ function CarteMini({ sendDataToParent }) {
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                         />
-                        <Getlatlon/>
-                        {console.log(datas)}
+                        <Getlatlon/>                        
                         if ({datas.lenght > 0}) {
                             <ul>
                                 {datas.map((item) => (

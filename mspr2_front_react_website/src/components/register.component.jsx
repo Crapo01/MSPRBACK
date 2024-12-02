@@ -149,7 +149,7 @@ export default class Register extends Component {
         },
          error => {
           
-          alert("reCaptcha not verified: error "+error);
+          alert("reCaptcha not verified: error ",error);
           window.location.reload();
         }
     

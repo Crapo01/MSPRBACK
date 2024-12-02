@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col,Image,Row } from "react-bootstrap";
 import useLocalStorage from "../hooks/useLocalStorage";
+import {BASE_URL} from '../config/config.js';
 
 function Actu() {
     const [localDatas,setLocalDatas] = useLocalStorage("actu")
@@ -10,7 +11,7 @@ function Actu() {
     async function fetchData() {
         try {
             
-            const response = await fetch("http://localhost:8080/api/informations/all");            
+            const response = await fetch(`${BASE_URL}/api/informations/all`);            
             const data = await response.json();            
             if (data.code === "rest_no_route") {throw "error:rest_no_route"} else {sortDatas(data)} ;
 

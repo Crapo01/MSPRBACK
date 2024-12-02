@@ -6,6 +6,7 @@ import RoutingMachine from "./RoutingMachine";
 import { Link } from "react-router-dom";
 import { ConcertContext } from "./context";
 import useLocalStorage from "../hooks/useLocalStorage";
+import {BASE_URL} from '../config/config.js';
 
 
 
@@ -77,16 +78,13 @@ function Carte(props) {
     //console.log("fetch datas")
     //console.log(datas,filteredScenes)
     try {
-      let response = await fetch("http://localhost:8080/api/pointeurs/all");
-      // let response = await fetch("http://localhost/ns_hl_wp/wp-json/acf/v3/pointeur");
+      let response = await fetch(`${BASE_URL}/api/pointeurs/all`);      
       let data = await response.json();
-      //console.log("data1:"+data)
+      //console.log("data1:",data)
       if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data);setLocalDatas(data) };
-      response = await fetch("http://localhost:8080/api/concerts/all");
-      // response = await fetch("http://localhost/ns_hl_wp/wp-json/acf/v3/concerts");
+      response = await fetch(`${BASE_URL}/api/concerts/all`);      
       data = await response.json();
-      //console.log("data2")
-      //console.log(data)
+      //console.log("data2",data)      
       if (data.code === "rest_no_route") { throw "error:rest_no_route" } else {
         
         setProg(data);
@@ -95,8 +93,7 @@ setLocalConcerts(data)
       };
 
     } catch (error) {
-      //console.log("Une erreur est survenue dans l'appel API: ")
-      //console.log(error)
+      console.log("Une erreur est survenue dans l'appel API: ",error)      
     }
   }
 
@@ -113,8 +110,7 @@ setLocalConcerts(data)
         )
     //console.log(filteredProg)
         let temp=new Array;
-        //console.log("filteredProg")
-        //console.log(datas)
+        //console.log("filteredProg",datas)        
         filteredProg.map((e)=>(datas.map((ee)=> {
           const str= ee.nom;
           //console.log(e.acf.scene+":"+str.substr(6));

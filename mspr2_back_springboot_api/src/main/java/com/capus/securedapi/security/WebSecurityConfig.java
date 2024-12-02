@@ -100,6 +100,8 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                         .requestMatchers("/api/access/**").permitAll()
                         .requestMatchers("/api/informations/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE ,"/api/informations/**").hasRole("EDITOR")
+                        .requestMatchers(HttpMethod.POST ,"/api/informations/**").hasRole("EDITOR")
+                        .requestMatchers(HttpMethod.PUT ,"/api/informations/**").hasRole("EDITOR")
                         .requestMatchers("/api/concerts/**").permitAll()
                         .requestMatchers("/api/pointeurs/**").permitAll()
                         .requestMatchers("/ws-endpoint/**").permitAll()

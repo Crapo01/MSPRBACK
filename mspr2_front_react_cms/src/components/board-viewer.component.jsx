@@ -5,7 +5,6 @@ import EventBus from "../common/EventBus";
 import ActuViewer from "./viewer-actu";
 import PointeurViewer from "./viewer-pointeur";
 import ConcertViewer from "./viewer-concert";
-import authService from "../services/auth.service";
 import RedirectToLogin from "./redirect-to-login";
 
 
@@ -29,6 +28,7 @@ export default class BoardUser extends Component {
         });
       },
       error => {
+        console.log("error",error)
         this.setState({
           content:
             (error.response &&
@@ -39,11 +39,13 @@ export default class BoardUser extends Component {
         });
 
         if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
-          this.setState({
-            redir: true
-          });
+          EventBus.dispatch("logout");          
         }
+
+        this.setState({
+          redir: true
+        });
+
       }
     );
   }

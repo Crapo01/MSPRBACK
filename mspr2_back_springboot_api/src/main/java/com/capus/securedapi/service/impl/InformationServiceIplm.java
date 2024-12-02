@@ -23,7 +23,8 @@ public class InformationServiceIplm implements InformationService {
 
     @Override
     public Information deleteInformation(Long id) throws ApiException {
-        Information informationDeleted = infosRepository.findById(id).orElseThrow(() -> new ApiException("Id:" + id + " Not found in database", HttpStatus.NOT_FOUND));
+        Information informationDeleted = infosRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Id:" + id + " Not found in database", HttpStatus.NOT_FOUND));
         infosRepository.deleteById(id);
         return informationDeleted;
     }

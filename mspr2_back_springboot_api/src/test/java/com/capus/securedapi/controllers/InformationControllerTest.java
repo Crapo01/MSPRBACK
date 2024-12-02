@@ -17,8 +17,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//A VOIR: security must be disabled
-//        database is not reset to pretest state
+
 
 
 @SpringBootTest
@@ -69,10 +68,10 @@ public class InformationControllerTest {
     @Test
     public void testDeleteInfo_HappyPath() throws Exception {
         // Arrange
-        long userId = 40L;
+        long Id = 40L;
 
         // Act
-        ResultActions result = mockMvc.perform(delete("/api/informations/{id}", userId));
+        ResultActions result = mockMvc.perform(delete("/api/informations/{id}", Id));
 
         // Assert
         result.andExpect(status().isOk());
@@ -80,10 +79,10 @@ public class InformationControllerTest {
     @Test
     public void testDeleteInfo_NoInfoFound() throws Exception {
         // Arrange
-        long userId = 0L;
+        long Id = 0L;
 
         // Act
-        ResultActions result = mockMvc.perform(delete("/api/informations/{id}", userId));
+        ResultActions result = mockMvc.perform(delete("/api/informations/{id}", Id));
 
         // Assert
         result.andExpect(status().isNotFound());

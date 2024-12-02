@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-
 import AuthService from "./services/auth.service";
-
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
@@ -10,10 +8,10 @@ import Profile from "./components/profile.component";
 import BoardViewer from "./components/board-viewer.component";
 import BoardEditor from "./components/board-editor.component";
 import BoardAdmin from "./components/board-admin.component";
-
 import "./App.css";
-// import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
+import Footer from "./components/Footer";
+import Mentions from "./pages/Mentions";
 
 
 class App extends Component {
@@ -147,8 +145,10 @@ class App extends Component {
             <Route path="/viewer" element={<BoardViewer />} />
             <Route path="/editor" element={<BoardEditor />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/mentions" element={<Mentions />} />
           </Routes>
         </div>
+        <Footer/>
       </div>
     );
   }

@@ -12,14 +12,7 @@ function PointeurViewer() {
             setShowPanel(user.roles.includes("ROLE_VIEWER"));
         }
     }, []);
-
-
-
-
-
-
-
-
+    
     return (
         <>
             {showPanel &&

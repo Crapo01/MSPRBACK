@@ -289,8 +289,11 @@ public class AuthController {
     requestMap.add("response", token.getToken());
 
     CaptchaResponseType apiResponse = restTemplate.postForObject(GOOGLE_RECAPTCHA_ENDPOINT, requestMap, CaptchaResponseType.class);
-    
-    return ResponseEntity.ok(apiResponse);
-  }
 
+      if (apiResponse != null && apiResponse.isSuccess()){
+        return ResponseEntity.ok(apiResponse);
+      }else {
+        return ResponseEntity.badRequest().body(apiResponse);
+      }
+  }
 }

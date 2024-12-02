@@ -5,9 +5,9 @@ Cloner le repo.
 
 Aller à la racine du site cd MSPRFRONT
 
-npm install
+  npm install
 
-pour installer toutes les dependances:
+va installer toutes les dependances:
 
 "dependencies": {
 
@@ -33,12 +33,14 @@ pour installer toutes les dependances:
   # lancement de l'app+serveur applicatif
 
   Aller à la racine du site et lancer dans la console:  
-  npm run dev 
+  
+    npm run dev 
 
   # BUILD de l'app pour deploiement WEB
 
   Aller à la racine du site et lancer dans la console:
-  npm run build
+
+    npm run build
 
   le build est dans le dossier dist
 

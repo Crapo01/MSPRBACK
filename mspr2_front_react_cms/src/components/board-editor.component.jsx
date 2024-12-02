@@ -6,9 +6,8 @@ import ActuAdmin from "./editor-actu";
 import ConcertAdmin from "./editor-concert";
 import PointeurAdmin from "./editor-pointeur";
 import { StompSessionProvider} from "react-stomp-hooks";
-import Notifications from "./notification";
 import RedirectToLogin from "./redirect-to-login";
-
+import {BASE_URL} from '../config/config.js';
 
 
 
@@ -40,11 +39,13 @@ export default class BoardEditor extends Component {
         });
 
         if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
-          this.setState({
-            redir: true
-          });
+          EventBus.dispatch("logout");         
         }
+
+        this.setState({
+          redir: true
+        });
+
       }
     );
   }
@@ -58,7 +59,7 @@ export default class BoardEditor extends Component {
           <h3>{this.state.content}</h3>
         </header>
         <StompSessionProvider
-          url={'http://localhost:8080/ws-endpoint'}>                    
+          url={`${BASE_URL}/ws-endpoint`}>                    
         <ActuAdmin/>
         <ConcertAdmin/>
         <PointeurAdmin/>

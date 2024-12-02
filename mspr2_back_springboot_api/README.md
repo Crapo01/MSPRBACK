@@ -1,4 +1,29 @@
 # MSPR2 nationsound API MYSQL
+
+## DEPLOY PROJECT FROM GITHUB
+
+clone repo or get zipfile from github
+
+unzip file in working folder
+
+open intelliJ > File > Open > select your project in working folder
+
+Create an empty database  *"db_name"* (MySQL in localhost for this project). JPA will create needed tables at runtime.
+
+Update application.properties to link your DB
+
+spring.application.name=secured_api
+
+spring.jpa.hibernate.ddl-auto=update  
+spring.datasource.url=jdbc:mysql://localhost:3306/*"db_name"*
+spring.datasource.username= *"db_username here"*
+spring.datasource.password= *"db_password here"*  
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.show-sql= true (show SQL requests in console if set to true)
+
+
+
+## DEVELOPMENT STEPS
 springboot initializer
 
 intelliJ

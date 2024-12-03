@@ -10,10 +10,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 
 const required = value => {
-  if (!value) {    
+  if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!        
+        This field is required!
       </div>
     );
   }
@@ -47,7 +47,7 @@ class Login extends Component {
     });
   }
 
-  handleSendRequestToApi(){
+  handleSendRequestToApi() {
     this.setState({
       message: "",
       loading: true
@@ -58,7 +58,7 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.router.navigate("/profile");
+          this.props.router.navigate("/");
           window.location.reload();
         },
         error => {
@@ -95,26 +95,22 @@ class Login extends Component {
     }
 
     AuthService.verifyCaptcha(token)
-    .then(
-      response => {
-      // console.log(response.data)
-      // console.log(response )
-      if (response.data.success){        
-        this.handleSendRequestToApi()
-      } else 
-      {
-        alert("captcha failed")
-        window.location.reload();
-      }
-      },
-       error => {
-        
-        alert("reCaptcha not verified: error "+error);
-        window.location.reload();
-      }
-  
+      .then(
+        response => {
+          // console.log(response.data)
+          // console.log(response )
+          if (response.data.success) {
+            this.handleSendRequestToApi()
+          } else {
+            alert("captcha failed")
+            window.location.reload();
+          }
+        },
+        error => {
+          alert("reCaptcha not verified: error ", error);
+          window.location.reload();
+        }
       )
-
   }
 
   render() {
@@ -159,7 +155,7 @@ class Login extends Component {
 
             <ReCAPTCHA
               ref={this.state.recaptcharef}
-              sitekey={import.meta.env.VITE_SITE_KEY}              
+              sitekey={import.meta.env.VITE_SITE_KEY}
             />
 
             <div className="form-group">

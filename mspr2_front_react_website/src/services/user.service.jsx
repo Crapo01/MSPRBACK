@@ -1,11 +1,12 @@
 import axios from 'axios';
 import authHeader from './auth-header';
+import {BASE_URL} from '../config/config.js';
 
-const API_TEST_URL = 'http://localhost:8080/api/test/';
-const API_INFO_URL = 'http://localhost:8080/api/informations/';
-const API_CONCERT_URL = 'http://localhost:8080/api/concerts/';
-const API_POINTEUR_URL = 'http://localhost:8080/api/pointeurs/';
-const API_AUTH_URL = 'http://localhost:8080/api/auth/';
+const API_TEST_URL =    `${BASE_URL}/api/access/`;
+const API_INFO_URL = `${BASE_URL}/informations/`;
+const API_CONCERT_URL = `${BASE_URL}/api/concerts/`;
+const API_POINTEUR_URL = `${BASE_URL}/pointeurs/`;
+const API_AUTH_URL = `${BASE_URL}/api/auth/`;
 
 class UserService {
   getPublicContent() {
@@ -31,19 +32,19 @@ class UserService {
   }
 
   createConcert(data){
-    console.log("service create"+data)
-    console.log(authHeader())
+    //console.log("service create",data)
+    //console.log(authHeader())
     return axios.post(API_CONCERT_URL,data, { headers: authHeader() });
   }
   
   updateConcert(data,id){
-    console.log("service create"+data)
-    console.log(authHeader())
+    //console.log("service create",data)
+    //console.log(authHeader())
     return axios.put(API_CONCERT_URL+'update/'+id,data, { headers: authHeader() });
   }
   
   deleteConcert(id){
-    console.log("service delete"+id)
+    //console.log("service delete",id)
     return axios.delete(API_CONCERT_URL + id, { headers: authHeader() });
   }
   
@@ -54,19 +55,19 @@ class UserService {
   }
   
   createPointeur(data){
-    console.log("service create"+data)
-    console.log(authHeader())
+    //console.log("service create",data)
+    //console.log(authHeader())
     return axios.post(API_POINTEUR_URL,data, { headers: authHeader() });
   }
   
   updatePointeur(data,id){
-    console.log("service create"+data)
-    console.log(authHeader())
+    //console.log("service create",data)
+    //console.log(authHeader())
     return axios.put(API_POINTEUR_URL+'update/'+id,data, { headers: authHeader() });
   }
   
   deletePointeur(id){
-    console.log("service delete"+id)
+    //console.log("service delete",id)
     return axios.delete(API_POINTEUR_URL + id, { headers: authHeader() });
   }
   
@@ -77,19 +78,19 @@ class UserService {
   }
   
   createInfo(data){
-    console.log("service create"+data)
-    console.log(authHeader())
+    //console.log("service create",data)
+    //console.log(authHeader())
     return axios.post(API_INFO_URL,data, { headers: authHeader() });
   }
   
   updateInfo(data,id){
-    console.log("service create"+data)
-    console.log(authHeader())
+    //console.log("service create",data)
+    //console.log(authHeader())
     return axios.put(API_INFO_URL+'update/'+id,data, { headers: authHeader() });
   }
   
   deleteInfo(id){
-    console.log("service delete"+id)
+    //console.log("service delete",id)
     return axios.delete(API_INFO_URL + id, { headers: authHeader() });
   }
 
@@ -100,14 +101,14 @@ class UserService {
   }
 
   deleteUser(id){
-    console.log("service delete"+id)
+    //console.log("service delete",id)
     return axios.delete(API_AUTH_URL + id, { headers: authHeader() });
   }
 
   updateUser(data,id){
-    console.log(" service create "+id)
-    console.log(data)
-    console.log(authHeader())
+    //console.log(" service create ",id)
+    //console.log(data)
+    //console.log(authHeader())
     
     return axios.put(API_AUTH_URL + id,data, { headers: authHeader() });
   }

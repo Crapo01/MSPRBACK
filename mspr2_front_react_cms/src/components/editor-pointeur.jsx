@@ -7,7 +7,7 @@ import CarteMini from "./cartemini";
 
 function PointeurAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
     const [dataFromChild, setDataFromChild] = useState({ lat: 48.83, lon: 2.44 });
 
@@ -70,9 +70,7 @@ function PointeurAdmin() {
         if (datas) {
             return (
                 <>
-
                     <Row className={"m-3 sticky50"}>
-
                         {datas.map((item) => (
                             <Col key={item.id} className={"p-1 mx-3 border col-12 overflow-auto"} >
                                 <div> {"id:" + item.id + " | lon: " + item.lon + " | lat: " + item.lat}  </div>
@@ -174,13 +172,9 @@ function PointeurAdmin() {
                                         <div className="d-flex flex-column mx-1">
                                             <label>Type</label>
                                             <Field name="type" as="select" className="type">
-
                                                 <option value="scene">scene</option>
-
                                                 <option value="alimentation">alimentation</option>
-
                                                 <option value="informations">informations</option>
-
                                                 <option value="toilettes">toilettes</option>
                                             </Field>
 

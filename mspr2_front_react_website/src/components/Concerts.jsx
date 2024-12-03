@@ -3,6 +3,10 @@ import { Button, Col, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { ConcertContext } from "../components/context"
 import useLocalStorage from "../hooks/useLocalStorage";
+import {BASE_URL} from '../config/config.js';
+
+
+
 function Concerts() {
     const groupe = useContext(ConcertContext);
     const [localDatas,setLocalDatas] = useLocalStorage("concerts")
@@ -10,16 +14,13 @@ function Concerts() {
     async function fetchWordPressData() {
         try {
             
-            const response = await fetch("http://localhost:8080/api/concerts/all");
-            //const response = await fetch("https://nationsoundluc.rf.gd/wpdb/wp-json/acf/v3/concerts");
-            // const response = await fetch("http://localhost:3306/wordpress/wp-json/acf/v3/concerts");
+            const response = await fetch(`${BASE_URL}/api/concerts/all`);            
             const data = await response.json();
             //console.log(data)
             if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data);setLocalDatas(data) };
 
         } catch (error) {
-            //console.log("Une erreur est survenue dans l'appel API: ")
-            //console.log(error)
+            console.log("Une erreur est survenue dans l'appel API: ",error)            
         }
     }
     useEffect(() => {

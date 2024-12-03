@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Field, Form, Formik } from "formik";
 import userService from "../services/user.service";
 import authService from "../services/auth.service";
@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 
 function UserAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
 

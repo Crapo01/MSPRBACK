@@ -56,9 +56,9 @@ public class PointeurController {
             description = "All access allowed.",
             tags = { "All access allowed" })
     // ALL authorized
-    public ResponseEntity<Object> getAllPointeurs() {
+    public ResponseEntity<List<Pointeur>> getAllPointeurs() {
         List<Pointeur> pointeurs = pointeurService.getAllPointeurs();
-        return response(HttpStatus.OK,"All Pointeur returned",pointeurs);
+        return ResponseEntity.ok(pointeurs);
     }
 
     @ApiResponses({

@@ -19,7 +19,7 @@ import Login from "./components/login.component"
 import { StompSessionProvider, useStompClient, useSubscription } from "react-stomp-hooks"
 import { toast, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
-
+import {BASE_URL} from './config/config.js';
 
 
 
@@ -41,11 +41,7 @@ function App() {
 
     // Subscribe to the topic that we have opened in our spring boot app
     useSubscription('/topic/reply', (notif) => { setMessage(JSON.parse(notif.body)) });
-    if (message){
-      console.log(message)
-    
-    }
-    
+       
     message ? toast.error
       (CustomToastWithLink, {
         position: "bottom-right",
@@ -84,7 +80,7 @@ function App() {
         />
         <Header></Header>
         <StompSessionProvider
-          url={'http://localhost:8080/ws-endpoint'}>
+          url={`${BASE_URL}/ws-endpoint`}>
           <PushNotification />
         </StompSessionProvider>
         <div className="maxheight">

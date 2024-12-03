@@ -7,7 +7,7 @@ import authService from "../services/auth.service";
 
 function ConcertViewer() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {
@@ -37,21 +37,15 @@ function ConcertViewer() {
 
 
     function Event() {
-
-
-
         if (datas) {
             return (
                 <>
-
                     <Row className={"m-3"}>
-
                         {datas.map((item) => (
                             <Col key={item.id} className={"p-1 m-2 border d-flex flex-column flex-md-row col-12 overflow-auto"} >
                                 <div>
                                     <img src={item.image} alt="" className="img100px" />
                                 </div>
-
                                 <div >
                                     <div> {"nom: " + item.nom + " | origine: " + item.origine}  </div>
                                     <div> {"date: " + item.date + " | heure: " + item.heure + " | scene: " + item.scene}  </div>
@@ -68,11 +62,7 @@ function ConcertViewer() {
             return <h3>Pas de concert pour le moment</h3>
         }
     }
-
-
-
-
-
+    
     return (
         <>
             {showPanel &&

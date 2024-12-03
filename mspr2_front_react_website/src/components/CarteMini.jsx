@@ -4,6 +4,7 @@ import { Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
+import {BASE_URL} from '../config/config.js';
 
 
 function CarteMini() {
@@ -12,16 +13,13 @@ function CarteMini() {
   const [datas, setDatas] = useState([]);
   async function fetchWordPressData() {
     try {
-      const response = await fetch("http://localhost:8080/api/pointeurs/all");
-        // const response = await fetch("https://nationsoundluc.rf.gd/wpdb/wp-json/acf/v3/pointeur");
-        // const response = await fetch("http://localhost/ns_hl_wp/wp-json/acf/v3/pointeur");
+      const response = await fetch(`${BASE_URL}/api/pointeurs/all`);        
         const data = await response.json();
         //console.log(data)
         if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data);setLocalDatas(data) };
 
     } catch (error) {
-        //console.log("Une erreur est survenue dans l'appel API: ")
-        //console.log(error)
+        console.log("Une erreur est survenue dans l'appel API: ",error)        
     }
 }
 useEffect(() => {

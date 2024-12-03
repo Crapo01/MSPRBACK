@@ -1,35 +1,57 @@
-package com.capus.securedapi.service;
+package com.capus.securedapi.repository;
 
 import com.capus.securedapi.entity.Information;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class InformationServiceIntegrationTest {
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class UserRepositoryTest {
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Autowired
-    private InformationService informationService;
+    private InformationRepository informationRepository;
 
     @Test
-    void createInformation() {
-
-        //CREATE
+    public void testFindAll() {
+        //GIVEN
         Information information = new Information();
-        information.setMessage("Hello World");
+        information.setMessage("test");
 
-        //TEST
-        Information savedInformation = informationService.createInformation(information);
+        //WHEN
+        List<Information> informations = informationRepository.findAll();
 
-        //VERIFY
-        assertNotNull(savedInformation);
-        assertEquals("Hello World", savedInformation.getMessage());
-        assertNotNull(savedInformation.getId());
+        //assert
+        assertFalse(informations.isEmpty());
+
     }
+
+    @Test
+    public void testCreate() {
+        //GIVEN
+        Information information = new Information();
+        information.setMessage("test");
+
+        //WHEN
+        Information savedInformation = informationRepository.save(information);
+
+        //assert
+        assertEquals("test",savedInformation.getMessage());
+
+    }
+
+
+
 }

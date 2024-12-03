@@ -7,7 +7,7 @@ import userService from "../services/user.service";
 
 function ConcertAdmin() {
 
-    const [datas, setDatas] = useState(false);
+    const [datas, setDatas] = useState([]);
     const [showPanel, setShowPanel] = useState(false);
 
     async function fetchData() {
@@ -65,9 +65,7 @@ function ConcertAdmin() {
         if (datas) {
             return (
                 <>
-
                     <Row className={"m-3 sticky50"}>
-
                         {datas.map((item) => (
                             <Col key={item.id} className={"p-1 mx-3 border col-12 overflow-auto"} >
                                 <div> {"id: " + item.id + " | nom: " + item.nom + " | origine: " + item.origine}  </div>
@@ -140,7 +138,6 @@ function ConcertAdmin() {
         return (
             <div className={"p-3 border rounded bg-light shadow sticky50"}>
                 <section >
-
                     <div className="m-3 p-1 border rounded bg-secondary ">
                         <h2>Mettre à jour un groupe</h2>
                     </div>
@@ -153,7 +150,6 @@ function ConcertAdmin() {
                             origine: "Europe",
                             image: "https://i.ebayimg.com/images/g/iF0AAOSw6x9i5MMT/s-l1200.png"
                         }}
-
                     >
                         {props => (
                             <Form>

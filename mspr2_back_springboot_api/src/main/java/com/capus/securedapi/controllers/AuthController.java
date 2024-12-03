@@ -9,6 +9,7 @@ import com.capus.securedapi.dto.UserDetailsDto;
 import com.capus.securedapi.dto.UserRoleUpdateDto;
 import com.capus.securedapi.payload.request.CaptchaToken;
 import com.capus.securedapi.payload.response.CaptchaResponseType;
+import com.capus.securedapi.payload.response.CustomHttpResponse;
 import com.capus.securedapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -114,8 +115,7 @@ public class AuthController {
 
   @ApiResponses({
           @ApiResponse(responseCode = "201", description = "User registered successfully!"),
-          @ApiResponse(responseCode = "400 a", description = "Error: Username is already taken!"),
-          @ApiResponse(responseCode = "400 b", description = "Error: Email is already in use!")
+          @ApiResponse(responseCode = "400", description = "Error: Username or Email is already in use!")
   })
   @Operation(
           summary = "Create a new user with encrypted password in DB",
@@ -123,17 +123,12 @@ public class AuthController {
           tags = { "All access allowed" })
   @PostMapping("signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    if (userRepository.existsByUsername(signUpRequest.getUsername())||userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity
               .badRequest()
-              .body(new MessageResponse("Error: Username is already taken!"));
+              .body(new MessageResponse("Error: Username or Email is already in use!"));
     }
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return ResponseEntity
-              .badRequest()
-              .body(new MessageResponse("Error: Email is already in use!"));
-    }
 
     // Create new user's account
     User user = new User(signUpRequest.getUsername(),
@@ -219,8 +214,10 @@ public class AuthController {
   }
 
   @ApiResponses({
-          @ApiResponse(responseCode = "200", description = "User + updatedUser.getRoles().toString() +  updated successfully!"),
-          @ApiResponse(responseCode = "400", description = "Error: No User found!")
+          @ApiResponse(responseCode = "200", description = "User updated successfully!",content = { @Content(mediaType = "application/json",
+                  schema = @Schema(defaultValue = "User updated successfully!")) }),
+          @ApiResponse(responseCode = "404", description = "Error: No User found!",content = { @Content(mediaType = "application/json",
+                  schema = @Schema(defaultValue = "Error: No User found!")) })
   })
   @Operation(
           summary = "Update user role by ID",
@@ -292,8 +289,11 @@ public class AuthController {
     requestMap.add("response", token.getToken());
 
     CaptchaResponseType apiResponse = restTemplate.postForObject(GOOGLE_RECAPTCHA_ENDPOINT, requestMap, CaptchaResponseType.class);
-    
-    return ResponseEntity.ok(apiResponse);
-  }
 
+      if (apiResponse != null && apiResponse.isSuccess()){
+        return ResponseEntity.ok(apiResponse);
+      }else {
+        return ResponseEntity.badRequest().body(apiResponse);
+      }
+  }
 }

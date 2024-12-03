@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InformationServiceIplm implements InformationService {
@@ -36,14 +37,20 @@ public class InformationServiceIplm implements InformationService {
 
     @Override
     public Information update(Long id, Information request) throws ApiException {
-        Information information = infosRepository
-                .findById(id)
-                //          .orElseThrow(()->new ResourceNotFoundException("Id:"+id+" Not found in database"));
-                .orElseThrow(() -> new ApiException("Id:" + id + " Not found in database", HttpStatus.NOT_FOUND));
+        Optional<Information> optionalInfo = infosRepository.findById(id);
 
+        // Vérifier si l'utilisateur existe
+        if (!optionalInfo.isPresent()) {
+            throw new ApiException("Info not found with id: " + id);
+        }
+
+
+        Information information = optionalInfo.get();
         information.setId(id);
         information.setMessage(request.getMessage());
         information.setImportant(request.isImportant());
         return infosRepository.save(information);
+
+
     }
 }

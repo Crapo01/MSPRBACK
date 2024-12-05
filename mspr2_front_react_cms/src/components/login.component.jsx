@@ -141,6 +141,7 @@ class Login extends Component {
                 value={this.state.username}
                 onChange={this.onChangeUsername}
                 validations={[required]}
+                autocomplete="your-username"
               />
             </div>
 
@@ -153,6 +154,7 @@ class Login extends Component {
                 value={this.state.password}
                 onChange={this.onChangePassword}
                 validations={[required]}
+                autocomplete="new-password"
               />
             </div>
 

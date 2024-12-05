@@ -9,8 +9,7 @@ function ActuViewer() {
 
     async function fetchData() {        
         userService.getInfo().then(
-            response => {
-                 console.log(response)
+            response => {                 
                 const data = response.data;
                 if (data.code === "rest_no_route") { throw "error:rest_no_route" } else { setDatas(data) };
             },

@@ -193,7 +193,7 @@ public class AuthController {
 
   @ApiResponses({
           @ApiResponse(responseCode = "200", description = "User deleted successfully!"),
-          @ApiResponse(responseCode = "400", description = "Error: No User found!")
+          @ApiResponse(responseCode = "404", description = "Error: No User found!")
   })
   @Operation(
           summary = "Delete account by ID",
@@ -273,7 +273,7 @@ public class AuthController {
       });
     }
     User updatedUser = userService.updateUser(id, roles);
-    return ResponseEntity.ok(new MessageResponse("User " + updatedUser.getRoles().toString() + " updated successfully!"));
+    return ResponseEntity.ok(new MessageResponse("User " + updatedUser.getId().toString() + " updated successfully!"));
   }
 
   @Operation(

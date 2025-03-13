@@ -32,9 +32,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="container">
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-        </header>
+        
         <article>
           <h1> NATIONSOUND CONTENT MANAGEMENT SYSTEM </h1>
           <p>User's must be logged in to access securised content:</p>
@@ -42,6 +40,8 @@ export default class Home extends Component {
           <p>Editors have read/write/modify/delete rights for concerts,actu and pointeurs content only</p>
           <p>Admins have read/write/modify/delete rights for users accounts fields only</p>
         </article>
+        <h3>{this.state.content}</h3>
+        <a target="blank" href="https://msprback-cms-reworked.onrender.com/swagger-ui/index.html">DOCUMENTATION</a>
       </div>
     );
   }

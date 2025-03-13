@@ -103,7 +103,7 @@ function UserAdmin() {
                                 <Col  className={"p-1  col-12 col-md-6 overflow-auto"} >
                                     <div className="d-flex">
                                         <div>
-                                            <div> {"id:" + item.id + " |        username: " + item.username}  </div>
+                                            <div> {"username: " + item.username}  </div>
                                             {item.roles.map((role) => (
                                                 <div> {role.name}  </div>
                                             ))}

@@ -25,20 +25,24 @@ function CarteMini({ sendDataToParent }) {
 
     function Getlatlon() {
         const map = useMap();
-        map.on('click', function(ev) {
-            sendDataToParent({lon: ev.latlng.lng,lat: ev.latlng.lat}) // ev is an event object (MouseEvent in this case)
+        map.on('click', function(ev) {            
+            let lat= ev.latlng.lat;
+            lat = lat.toFixed(6);
+            let lng= ev.latlng.lng;
+            lng = lng.toFixed(6);
+            sendDataToParent({lon: lng,lat: lat}) // ev is an event object (MouseEvent in this case)
         });
     }
 
     return (
         <>
-            <div className={"p-3 m-md-5 border rounded bg-secondary "}>
+            <div className={"p-3 m-md-5 border rounded bg-secondary"}>
                 <div className="lightningBg border rounded">
                     <h1 className="sectionTitle text-center text-light p-3 fs-1 fw-bold">CARTE</h1>
                 </div>
-                <Row className="justify-content-center my-5 mx-md-5 p-5 border rounded metalBg ">
-                    <MapContainer style={{ height: '300px', width: '100%' }} center={[48.8382, 2.4427]} zoom={15} scrollWheelZoom={false} locate={{ setView: true, maxZoom: 16 } }>
-                        <TileLayer 
+                <Row className="justify-content-center my-5 mx-md-5 p-5 border rounded metalBg">
+                    <MapContainer style={{ height: '400px', width: '70%' }} center={[48.8382, 2.4427]} zoom={15} scrollWheelZoom={false} locate={{ setView: true, maxZoom: 16 } } >
+                        <TileLayer className="z-100"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                         />
